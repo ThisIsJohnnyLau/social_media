@@ -1,0 +1,227 @@
+---
+title: "Equity valuation"
+output:
+  html_document:
+    output_dir: "html"
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    # css: ../../../styles.css
+  pdf_document: default
+
+---
+
+# Understanding Twitter data
+
+Get started with understanding the power of Twitter data and what you can achieve using social media analysis. In this chapter, you’ll extract your first set of tweets using the Twitter API and functions from the powerful ‘rtweet’ library. Then it’s time to explore how you can use the components from your extracted Twitter data to derive insights for social media analysis.
+
+## Power of twitter data
+
+The volume and velocity of tweets posted on twitter every second is an indicator of the power of twitter data.
+
+The enormous amount of information available, from the tweet text and its metadata, gives great scope for analyzing extracted tweets and deriving insights.
+
+Let's extract a 1% random sample of live tweets using stream_tweets() for a 60 seconds window and save it in a data frame.
+
+The dimensions of the data frame will give you insights about the number of live tweets extracted and the number of columns that contain the actual tweeted text and metadata on the tweets.
+
+***Steps***  
+Extract live tweets for 60 seconds time window.
+View dimensions of the data frame with the extracted tweets.
+
+```{r}
+library(rtweet)
+library(httpuv)
+library(tidyverse)
+```
+
+
+```{r}
+# Extract live tweets for 60 seconds window
+# tweets60s <- stream_tweets("", timeout = 60)
+
+# View dimensions of the data frame with live tweets
+# dim(tweets60s)
+```
+
+ou can see that a 1% sample of tweets, streamed in 120 seconds, has generated 6878 tweets and 90 columns of information on the tweets. Let's explore and analyze this rich information in the forthcoming lessons.
+
+Twitter allows the extraction of only a limited number of tweets with a free account.
+
+## Prerequisites to set up the R environment
+Before proceeding to set up the R environment to get authorization and interact with twitter, there are some prerequisites to be taken care of.
+
+You need to have a free twitter account, the pop-up blocker should be disabled, and the two R packages (rtweet and httpuv) should be installed before proceeding to set up the R environment.
+
+## Search and extract tweets
+
+Many functions are available in R to extract twitter data for analysis.
+
+search_tweets() is a powerful function from rtweet which is used to extract tweets based on a search query.
+
+The function returns a maximum of 18,000 tweets for each request posted.
+
+In this exercise, you will use search_tweets() to extract tweets on the Emmy Awards which are American awards that recognize excellence in the television industry, by looking for tweets containing the TEDxGlasgow hashtag.
+
+The library rtweet has been pre-loaded for this exercise.
+
+Instructions
+100 XP
+Extract 2000 tweets on "#TedXGlasgow", including all retweets.
+
+```{r}
+# Extract tweets on "#TedXGlasgow" and include retweets    
+twts_tedx <- search_tweets("#TedXGlasgow", 
+                 n = 2000, 
+                 include_rts = TRUE, 
+                 lang = "en")
+
+# View output for the first 5 columns and 10 rows
+head(twts_tedx[,1:5], 10)
+
+
+
+# Extract tweets on "TEDxGlaClimate" and include retweets    
+twts_tedx_climate <- search_tweets("TEDxGlaClimate", 
+                 n = 2000, 
+                 include_rts = TRUE, 
+                 lang = "en")
+
+# View output for the first 5 columns and 10 rows
+head(twts_tedx[,1:5], 10)
+```
+
+Well done on extracting your first set of tweets using search_tweets()! You can see various tweets posted by fans on the Emmy Awards.
+
+## Search and extract timelines
+
+Similar to search_tweets(), get_timeline() is another function in the rtweet library that can be used to extract tweets.
+
+The get_timeline() function is different from search_tweets(). It extracts tweets posted by a given user to their timeline instead of searching based on a query.
+
+The get_timeline() function can extract upto 3200 tweets at a time.
+
+eExtract 3200 tweets posted by TedXGlasgow.
+View the first few rows and columns of the extracted tweets.
+
+```{r}
+# Extract tweets posted by the user @TedXGlasgow
+get_TedX <- get_timeline("@TedXGlasgow", n = 3200)
+
+# View output for the first 5 columns and 10 rows
+head(get_TedX[,1:5], 10)
+```
+
+Great job so far on setting up the R environment and extracting tweets. You can see that Ronaldo has tweeted on different topics like soccer and fitness and also promoted his sponsors' products. Let's move on to the next lesson to understand the components of the extracted twitter data.
+
+## User interest and tweet counts
+
+The metadata components of extracted twitter data can be analyzed to derive insights.
+
+To identify twitter users who are interested in a topic, you can look at users who tweet often on that topic. The insights derived can be used to promote targeted products to interested users.
+
+In this exercise, you will identify users who have tweeted often on the topic "TedXGlasgow".
+
+***Steps***  
+Create a table of users and tweet counts.
+Sort table in descending order based on tweet counts.
+View the top 10 users who have tweeted the most.
+
+```{r}
+# Create a table of users and tweet counts for the topic
+sc_name <- table(get_TedX$screen_name)
+
+# Sort the table in descending order of tweet counts
+sc_name_sort <- sort(sc_name, decreasing = TRUE)
+
+# View sorted table for top 10 users
+head(sc_name_sort, 10)
+```
+
+You can see that the user @TechnoJeder has tweeted the most on Artificial Intelligence. You now know how to extract users who are interested in a specific topic using the screen_name column.
+
+## Compare follower count
+
+The follower count for a twitter account indicates the popularity of the personality or a business entity and is a measure of influence in social media.
+
+Knowing the follower counts helps digital marketers strategically position ads on popular twitter accounts for increased visibility.
+
+In this exercise, you will extract user data and compare followers count for twitter accounts of four popular news sites: CNN, Fox News, NBC News, and New York Times.
+
+Instructions
+100 XP
+Extract user data for twitter accounts of the 4 news sites.
+Create a data frame of screen names and follower counts for the sites.
+
+```{r}
+# Extract user data for the twitter accounts of news sites and Darin O Lien for comparison
+users <- lookup_users(c("DarinOlien", "ScotEntNews", "BBCScotlandNews", "STVNews", "heraldscotland", "Scotland", "VisitScotNews", "TheScotsman", "BBCRadioScot"))
+
+# Create a data frame of screen names and follower counts
+user_df <- users[,c("screen_name","followers_count")]
+
+# Display and compare the follower counts for the 4 news sites
+user_df
+```
+
+New York Times is the most popular news site with 44 million followers and it is closely followed by CNN with nearly 43 million followers. You have compared the popularity of twitter accounts based on their followers_count.
+
+## Retweet counts
+
+A retweet helps utilize existing content to build a following for your brand.
+
+The number of times a twitter text is retweeted indicates what is trending. The inputs gathered can be leveraged by promoting your brand using the popular retweets.
+
+In this exercise, you will identify tweets on "Artificial Intelligence" that have been retweeted the most.
+
+Tweets on "Artificial Intelligence", extracted using search_tweets(), have been saved as tweets_ai.
+
+The rtweet and dplyr libraries and the dataset tweets_ai have been pre-loaded.
+
+Instructions 1/2
+50 XP
+1
+2
+Create a data frame of tweet texts and their retweet counts.
+Sort the data frame based on retweet counts.
+Exclude rows with duplicate tweets from the sorted data frame.
+```{r}
+# Create a data frame of tweet text and retweet count
+rtwt <- twts_tedx_climate[,c("text", "retweet_count")]
+head(rtwt)
+
+# Sort data frame based on descending order of retweet counts
+rtwt_sort <- arrange(rtwt, desc(retweet_count))
+
+# Exclude rows with duplicate text from sorted data frame
+rtwt_unique <- unique(rtwt_sort, by = "text")
+
+# Print top 6 unique posts retweeted most number of times
+rownames(rtwt_unique) <- NULL
+head(rtwt_unique)
+```
+
+You have learned use cases of key components present in extracted twitter data. The output shows tweets on Artificial Intelligence that were retweeted the most. Let's continue our learning with the next chapter.
+
+# Analyzing Twitter data
+7%
+It’s time to go deeper. Learn how you can apply filters to tweets and analyze Twitter user data using the golden ratio and the Twitter lists they subscribe to. You’ll also learn how to extract trending topics and analyze Twitter data over time to identify interesting insights.
+
+## Filtering for original tweets
+
+An original tweet is an original posting by a twitter user and is not a retweet, quote, or reply.
+
+The "-filter" can be combined with a search query to exclude retweets, quotes, and replies during tweet extraction.
+
+In this exercise, you will extract tweets on "Superbowl" that are original posts and not retweets, quotes, or replies.
+
+The libraries rtweet and plyr have been pre-loaded for this exercise.
+
+Instructions
+100 XP
+Extract tweets that are not retweets, quotes, or replies.
+Check for the presence of replies.
+Check for the presence of quotes.
+Check for the presence of retweets.
+
