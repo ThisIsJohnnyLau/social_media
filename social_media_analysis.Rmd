@@ -61,8 +61,8 @@ The function returns a maximum of 18,000 tweets for each request posted.
 
 ```{r}
 # Extract tweets on "#TedXGlasgow" and include retweets    
-twts_tedx <- search_tweets("#TedXGlasgow", 
-                 n = 18000, 
+twts_tedx <- search_tweets("TEDxGlasgow", 
+                 n = 3000, 
                  include_rts = TRUE, 
                  lang = "en")
 
@@ -177,7 +177,7 @@ You have learned use cases of key components present in extracted twitter data. 
 
 # Analyzing Twitter data
   
-It’s time to go deeper. Learn how you can apply filters to tweets and analyze Twitter user data using the golden ratio and the Twitter lists they subscribe to. You’ll also learn how to extract trending topics and analyze Twitter data over time to identify interesting insights.
+It’s time to go deeper by applying filters to tweets; and analysing Twitter user data using the golden ratio and the Twitter lists they subscribe to. Then we can extract trending topics and analyse Twitter data over time to identify interesting insights.
 
 ## Filtering for original tweets
 
@@ -185,16 +185,6 @@ An original tweet is an original posting by a twitter user and is not a retweet,
 
 The "-filter" can be combined with a search query to exclude retweets, quotes, and replies during tweet extraction.
 
-In this exercise, you will extract tweets on "Superbowl" that are original posts and not retweets, quotes, or replies.
-
-The libraries rtweet and plyr have been pre-loaded for this exercise.
-
-Instructions
-100 XP
-Extract tweets that are not retweets, quotes, or replies.
-Check for the presence of replies.
-Check for the presence of quotes.
-Check for the presence of retweets.
 
 ```{r}
 # Extract 5000 original tweets on "Climate"
@@ -268,8 +258,6 @@ User information contains data on the number of followers and friends of the twi
 
 The user information may have multiple instances of the same user as the user might have tweeted multiple times on a given subject. You need to take the mean values of the follower and friend counts in order to consider only one instance.
 
-In this exercise, you will extract the number of friends and followers of users who tweet on 
-
 ***#TEDxGlasgow related ***
 
 ```{r}
@@ -296,11 +284,7 @@ The screen names have been tabulated with their corresponding counts of follower
 
 The ratio of the number of followers to the number of friends a user has is called the golden ratio.
 
-This ratio is a useful metric for marketers to strategize promotions.
-
-In this exercise, you will calculate the golden ratio for the aggregated data frame counts_df that was created in the last step of the previous exercise.
-
-The data frame counts_df and library dplyr have been pre-loaded for this exercise.
+This ratio is a useful metric for marketeers to strategize promotions.
 
 ```{r}
 # Calculate and store the golden ratio
@@ -319,7 +303,7 @@ counts_sort[counts_sort$follower>50000,]
 counts_sort[counts_sort$follower<1000,]
 ```
 
-You can see that many users having a high follower count also have a high positive ratio. These users can be used as a medium to promote a cosmetic brand to a wide audience.
+Users having a high follower count also have a high positive ratio. These users can be used as a medium to promote a cosmetic brand to a wide audience.
 
 
 ## Subscribers to twitter lists
@@ -364,8 +348,7 @@ Location-specific trends identify popular topics trending in a specific location
 
 It is more meaningful to extract trends around a specific region, in order to focus on twitter audience in that region for targeted marketing of a brand.
 
-Can you extract topics trending in UK and view the trends?
-
+What is trending in the UK?
 
 ```{r}
 # Get topics trending in UK
@@ -406,8 +389,6 @@ head(trend_df_sort,10)
 The most-tweeted trend in Glasgow was 'yeonjun' a Kpop star! This trend considered when promoting a music-related event.  The latest print is #Gray (because of Eastenders??)
 
 
-
-
 ## Visualizing frequency of tweets
 
 Visualizing the frequency of tweets over time helps understand the interest level over a product.
@@ -442,7 +423,7 @@ This code creates time series objects for two TED events for comparison
 ```{r}
 
 # Create a time series object for TEDxGlasgow at hourly intervals
-TEDxGlasgow_ts <- ts_data(twts_tedx, by ='hours')
+TEDxGlasgow_ts <- ts_data(twts_tedx, by = "hours")
 
 # Rename the two columns in the time series object
 names(TEDxGlasgow_ts) <- c("time", "TEDxGlasgow_n")
@@ -454,7 +435,7 @@ TEDxGlasgow_ts %>%
 
 ```{r}
 # Create a time series object for TEDxGlaClimate at hourly intervals
-TEDxGlaClimate_ts <- ts_data(twts_tedx_climate, by ='hours')
+TEDxGlaClimate_ts <- ts_data(twts_tedx_climate, by = "hours")
 
 # Rename the two columns in the time series object
 names(TEDxGlaClimate_ts) <- c("time", "TEDxGlasClimate_n")
@@ -474,7 +455,7 @@ twts_tedsummit2019 <- search_tweets("#TEDSummit2019",
 
 
 # Create a time series object for TEDxEdinburgh at hourly intervals
-tedsummit2019_ts <- ts_data(twts_tedsummit2019, by ='hours')
+tedsummit2019_ts <- ts_data(twts_tedsummit2019, by = "hours")
 
 # Rename the two columns in the time series object
 names(tedsummit2019_ts) <- c("time", "edin_n") 
@@ -486,20 +467,10 @@ tedsummit2019_ts %>%
 
 Time series objects aggregate tweet frequencies over time. They are useful for creating time series plots for comparison.
 
-```{r}
-
-```
-
 
 ## Compare tweet frequencies for two tags
 
-The volume of tweets posted for a product is a strong indicator of its "brand" salience. Let's compare brand salience for two competing tags, TEDxGlaClimate and ClimateCrisis.
-
-In the previous exercise, you had created time series objects for tweets on Puma and Nike. You will merge the time series objects and create time series plots to compare the frequency of tweets.
-
-The time series objects for Puma and Nike have been pre-loaded as TEDxGlaClimate and ClimateCrisis respectively.
-
-The libraries rtweet, reshape, and ggplot2 have also been pre-loaded.
+The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare "brand" salience for two competing tags, TEDxGlaClimate and ClimateCrisis.
 
 ```{r}
 library(reshape)
@@ -515,7 +486,7 @@ melt_df <- melt(merged_df, na.rm = TRUE, id.vars = "time")
 head(melt_df)
 
 # Plot frequency of tweets on Puma and Nike
-ggplot(data = melt_df, aes(x = time, y = value, col = variable))+
+ggplot(data = melt_df, aes(x = time, y = value, col = variable)) +
   geom_line(lwd = 0.8)
 ```
 
@@ -657,17 +628,20 @@ The code below will create bar plots for the popular terms appearing in a text c
 termfreq_25w <- freq_terms(corp_refined, 25)
 termfreq_25w
 
-# Identify terms with more than 50 counts from the top 25 list
-term50 <- subset(termfreq_25w, FREQ > 50)
-term50
+# Identify terms with more than 10 counts from the top 25 list
+term30 <- subset(termfreq_25w, FREQ > 30)
+term30
 
-# Create a bar plot using terms with more than 50 counts
-ggplot(term50, aes(x = reorder(WORD, -FREQ), y = FREQ)) +
-		geom_bar(stat = "identity", fill = "blue") + 
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 Terms like climate, join, watch, party are popular.  Bar plots quickly help summarize these popular terms in an easily interpretable form.
+
+```{r}
+# Create a bar plot using terms with more than 30 counts
+ggplot(term30, aes(x = reorder(WORD, -FREQ), y = FREQ)) +
+		geom_bar(stat = "identity", fill = "blue") + 
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ## Word clouds for visualization
 
@@ -743,7 +717,7 @@ top_10terms
 ```
 
 ***Comment***  
-sustainability, carbon, energy, water, and global warming aren't in the top topics.  The process can be repeated for ClimateCrisis for comparison.
+Sustainability, carbon, energy, water, and global warming aren't in the top topics.  The process can be repeated for ClimateCrisis for comparison.
 
 ## Extract sentiment scores
 
@@ -824,13 +798,4 @@ rtwt_matrx <- as.matrix(rtwt_df_new)
 head(rtwt_matrx)
 ```
 
-## Create a retweet network
-
-The core step in network analysis is to create a network object like a retweet network as it helps analyze the inter-relationships between the nodes.
-
-Understanding the position of potential customers on a retweet network allows a brand to identify key players who are likely to retweet posts to spread brand messaging.
-
-Can you create a retweet network on #travel using the matrix saved in the previous exercise?
-
-The matrix rtwt_matrx and the library igraph have been pre-loaded for this exercise.
 
