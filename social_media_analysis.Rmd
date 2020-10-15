@@ -1,5 +1,5 @@
 ---
-title: "Equity valuation"
+title: "Social Media Analysis"
 output:
   html_document:
     output_dir: "html"
@@ -224,4 +224,552 @@ Extract tweets that are not retweets, quotes, or replies.
 Check for the presence of replies.
 Check for the presence of quotes.
 Check for the presence of retweets.
+
+```{r}
+# Extract 1000 original tweets on "Climate"
+tweets_org <- search_tweets("Climate -filter:retweets -filter:quote -filter:replies", n = 5000)
+
+# Check for presence of replies
+tweets_org %>% 
+    count(reply_to_screen_name)
+        
+# Check for presence of quotes
+tweets_org %>% 
+    count(is_quote)
+
+# Check for presence of retweets
+tweets_org %>% 
+    count(is_retweet)
+```
+
+For all the 100 tweets, the output of NA for reply_to_screen_name and FALSE for is_quote and is_retweets confirms that the filtered tweets are original posts and not replies, quotes, or retweets.
+
+## Filtering on tweet language
+
+You can use the language filter with a search query to filter tweets based on the language of the tweet.
+
+The filter extracts tweets that have been classified by Twitter as being of a particular language.
+
+Can you extract tweets posted in French on the topic "Apple iphone"?
+
+The library rtweet has been pre-loaded for this exercise.
+
+Instructions
+100 XP
+Extract posts on "Apple iphone" that are tweeted in French.
+Display the tweet text.
+Display the tweet metadata showing the language of the tweet.
+
+```{r}
+# Extract tweets on "Climate" in French
+tweets_french <- search_tweets("Climate", lang = "fr")
+
+# Display the tweets
+head(tweets_french$text)
+
+# Display the tweet metadata showing the language
+head(tweets_french$lang)
+```
+
+## Filter based on tweet popularity
+
+Popular tweets are tweets that are retweeted and favorited several times.
+
+They are useful in identifying current trends. A brand can promote its merchandise and build brand loyalty by identifying popular tweets and retweeting them.
+
+In this exercise, you will extract tweets on "Chelsea" that have been retweeted a minimum of 100 times and also favorited at least by 100 users.
+
+The library rtweet has been pre-loaded for this exercise.
+
+Instructions
+100 XP
+Extract tweets with a minimum of 100 retweets and 100 favorites using filters.
+Create a data frame with the retweet and favorite counts.
+View the tweets.
+
+```{r}
+# Extract tweets with a minimum of 100 retweets and 100 favorites
+tweets_pop <- search_tweets("TEDx min_retweets:100 AND min_faves:100")
+
+# Create a data frame to check retweet and favorite counts
+counts <- tweets_pop[c("retweet_count", "favorite_count")]
+head(counts)
+
+# View the tweets
+head(tweets_pop$text)
+```
+
+You can see that the extracted tweets received a minimum of 100 retweets and 100 favorites. You can also change the minimum value for retweets and favorites from 100 to a higher number if required.
+
+## Extract user information
+
+Analyzing twitter user data provides vital information which can be used to plan relevant promotional strategies.
+
+User information contains data on the number of followers and friends of the twitter user.
+
+The user information may have multiple instances of the same user as the user might have tweeted multiple times on a given subject. You need to take the mean values of the follower and friend counts in order to consider only one instance.
+
+In this exercise, you will extract the number of friends and followers of users who tweet on #skincare or #cosmetics.
+
+Tweets on #skincare or #cosmetics, extracted using search_tweets(), have been pre-loaded as tweet_cos.
+
+The libraries rtweet and dplyr have also been pre-loaded.
+
+Instructions 1/2
+50 XP
+1
+2
+Extract user data from the pre-loaded tweets data frame.
+View the first 6 rows of the user data.
+
+```{r}
+# Extract user information of people who have tweeted on the topic
+user_cos <- users_data(twts_tedx)
+
+# View few rows of user data
+head(user_cos)
+
+# Aggregate screen name, follower and friend counts
+counts_df <- user_cos %>%
+               group_by(screen_name) %>%
+               summarise(follower = mean(followers_count),
+                   friend = mean(friends_count))
+
+# View the output
+head(counts_df)
+```
+
+
+The screen names have been tabulated with their corresponding counts of followers and friends. In the next exercise, you will learn how to use this data to calculate the golden ratio.
+
+## Explore users based on the golden ratio
+
+The ratio of the number of followers to the number of friends a user has is called the golden ratio.
+
+This ratio is a useful metric for marketers to strategize promotions.
+
+In this exercise, you will calculate the golden ratio for the aggregated data frame counts_df that was created in the last step of the previous exercise.
+
+The data frame counts_df and library dplyr have been pre-loaded for this exercise.
+
+```{r}
+# Calculate and store the golden ratio
+counts_df$ratio <- counts_df$follower/counts_df$friend
+
+# Sort the data frame in decreasing order of follower count
+counts_sort <- arrange(counts_df, desc(follower))
+
+# View the first few rows
+head(counts_sort)
+
+# Select rows where the follower count is greater than 50000
+counts_sort[counts_sort$follower>50000,]
+
+# Select rows where the follower count is less than 1000
+counts_sort[counts_sort$follower<1000,]
+```
+
+You can see that many users having a high follower count also have a high positive ratio. These users can be used as a medium to promote a cosmetic brand to a wide audience.
+
+
+## Subscribers to twitter lists
+
+A twitter list is a curated group of twitter accounts.
+
+Twitter users subscribe to lists that interest them. Collecting user information from twitter lists could help brands promote products to interested customers.
+
+In this exercise, you will extract lists of the twitter account of "NBA", the popular basketball league National Basketball Association.
+
+For one of the lists, you will extract the subscribed users and the user information for some of these users.
+
+The rtweet library has been pre-loaded for this exercise.
+
+Instructions 1/3
+Extract all the lists "NBA" subscribes to.
+
+```{r}
+# Extract all the lists "TEDxGlasgow" subscribes to and view the first 4 columns
+lst_TEDx <- lists_users("TEDx")
+lst_TEDx %>% 
+    arrange(desc(subscriber_count))
+
+# Extract subscribers of the list "TED" and view the first 4 columns
+list_TED_sub <- lists_subscribers("9783131", n = 500) %>% 
+    arrange(followers_count)
+list_TED_sub[,1:4]
+
+# Create a list of top screen names from the subscribers list
+users <- list_TED_sub$screen_name %>% 
+    head()
+
+# Extract user information for the list and view the first 4 columns
+users_TEDx_sub <- lookup_users(users)
+users_TEDx_sub
+```
+
+
+You now have extracted user data of potential customers to whom you can promote basketball merchandise.
+
+## rends by country name
+
+Location-specific trends identify popular topics trending in a specific location. You can extract trends at the country level or city level.
+
+It is more meaningful to extract trends around a specific region, in order to focus on twitter audience in that region for targeted marketing of a brand.
+
+Can you extract topics trending in Canada and view the trends?
+
+
+```{r}
+# Get topics trending in UK
+gt_country <- get_trends("United Kingdom") %>% 
+    arrange(desc(tweet_volume)) %>% 
+    view()
+
+```
+
+## Trends by city and most tweeted trends
+
+It is meaningful to extract trends around a specific region to focus on twitter audience in that region.
+
+Trending topics in a city provide a chance to promote region-specific events or products.
+
+In this exercise, you will extract topics that are trending in London and also look at the most tweeted trends. The libraries rtweet and dplyr have been pre-loaded for you.
+
+Note: tweet_volume is returned for trends only if this data is available.
+
+
+```{r}
+# Get topics trending in London
+gt_city <- get_trends("London")
+
+# View the first 6 columns
+head(gt_city[,1:6])
+
+# Aggregate the trends and tweet volumes
+trend_df <- gt_city %>%
+    group_by(trend) %>%
+    summarise(tweet_vol = mean(tweet_volume))
+
+# Sort data frame on descending order of tweet volumes and print header
+trend_df_sort <- arrange(trend_df, desc(tweet_vol))
+head(trend_df_sort,10)
+```
+
+The most-tweeted trend in London is '#makeitright' which is a song by a South Korean band. This trend can be used as a theme for promoting a music-related event. Head over to the next lesson to learn about plotting twitter data over time.
+
+## Visualizing frequency of tweets
+
+Visualizing the frequency of tweets over time helps understand the interest level over a product.
+
+Walmart operates a chain of supermarkets and stores around the world. It would be interesting to check the interest level and recall for the brand Walmart by visualizing the frequency of tweets.
+
+In this exercise, you will extract tweets on "#walmart" and create a time series plot for visualizing the interest levels.
+
+The library rtweet has been pre-loaded.
+
+Instructions 1/2
+50 XP
+1
+2
+Extract tweets on "#walmart", excluding all retweets.
+
+```{r}
+# Extract tweets on #walmart and exclude retweets
+walmart_twts <- search_tweets("#walmart", n = 18000, include_rts = FALSE)
+
+# View the output
+head(walmart_twts)
+
+# Create a time series plot
+ts_plot(walmart_twts, by = "hours", color = "blue")
+```
+
+The time series plot shows low levels of tweet activity on Walmart in general with a few spikes that are not too significant.
+
+## Create time series objects
+
+A time series object contains the aggregated frequency of tweets over a specified time interval.
+
+Creating time series objects is the first step before visualizing tweet frequencies for comparison.
+
+In this exercise, you will be creating time series objects for the competing sportswear brands Puma and Nike.
+
+Tweets extracted using search_tweets() for "#puma" and "#nike" have been pre-loaded for you as puma_st and nike_st.
+
+Instructions 1/2
+100 XP
+1
+Create a time series object at hourly intervals for tweets on "#puma".
+
+```{r}
+# Create a time series object for Puma at hourly intervals
+puma_ts <- ts_data(puma_st, by ='hours')
+
+# Rename the two columns in the time series object
+names(puma_ts) <- c("time", "puma_n")
+
+# View the output
+head(puma_ts)
+
+# Create a time series object for Nike at hourly intervals
+nike_ts <- ts_data(nike_st, by ='hours')
+
+# Rename the two columns in the time series object
+names(nike_ts) <- c("time", "nike_n")
+
+# View the output
+head(nike_ts)
+```
+
+Time series objects aggregate tweet frequencies over time. They are useful for creating time series plots for comparison.
+
+## Compare tweet frequencies for two brands
+
+The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare brand salience for two competing brands, Puma and Nike.
+
+In the previous exercise, you had created time series objects for tweets on Puma and Nike. You will merge the time series objects and create time series plots to compare the frequency of tweets.
+
+The time series objects for Puma and Nike have been pre-loaded as puma_ts and nike_ts respectively.
+
+The libraries rtweet, reshape, and ggplot2 have also been pre-loaded.
+
+Instructions 1/3
+35 XP
+1
+2
+3
+Merge the time series objects with time as the common column.
+
+```{r}
+# Merge the two time series objects and retain "time" column
+merged_df <- merge(puma_ts, nike_ts, by = "time", all = TRUE)
+head(merged_df)
+
+# Stack the tweet frequency columns
+melt_df <- melt(merged_df, na.rm = TRUE, id.vars = "time")
+
+# View the output
+head(melt_df)
+
+# Plot frequency of tweets on Puma and Nike
+ggplot(data = melt_df, aes(x = time, y = value, col = variable))+
+  geom_line(lwd = 0.8)
+```
+
+he higher level of tweet activity for Nike indicates a stronger brand salience for Nike than Puma. Visualizing tweets through time series analysis provides good insights on interest level on a product and can be used to compare brand salience. Head over to the next chapter to explore tweet text & twitter sentiments.
+
+# Visualize Tweet texts
+0%
+A picture is worth a thousand words! In this chapter, you’ll discover how you can visualize text from tweets using bar plots and word clouds. You’ll learn how to process tweet text and prepare a clean text corpus for analysis. Imagine being able to extract key discussion topics and people's perceptions about a subject or brand from the tweets they are sharing. You’ll be able to do just that using topic modeling and sentiment analysis.
+
+## Remove URLs and characters other than letters
+
+Tweet text posted by twitter users is unstructured, noisy, and raw.
+
+It contains emoticons, URLs, and numbers. This redundant information has to be cleaned before analysis in order to yield reliable results.
+
+In this exercise, you will remove URLs and replace characters other than letters with spaces.
+
+The tweet data frame twt_telmed, with 1000 extracted tweets on "telemedicine", has been pre-loaded for this exercise.
+
+The library qdapRegex has been pre-loaded for this exercise.
+
+Instructions 1/3
+100 XP
+1
+2
+3
+Extract tweet text from the pre-loaded dataset twt_telmed.
+
+```{r}
+# Extract tweet text from the pre-loaded dataset
+twt_txt <- twt_telmed$text
+head(twt_txt)
+
+# Remove URLs from the tweet text and view the output
+twt_txt_url <- rm_twitter_url(twt_txt)
+head(twt_txt_url)
+
+# Replace special characters, punctuation, & numbers with spaces
+twt_txt_chrs  <- gsub("[^A-Za-z]"," " , twt_txt_url)
+
+# View text after replacing special characters, punctuation, & numbers
+head(twt_txt_chrs)
+```
+
+ou can see that URLs have been removed and special characters, punctuation, & numbers have been replaced with additional spaces in the text. Proceed to the next exercise to continue processing the twitter text.
+
+## Build a corpus and convert to lowercase
+
+A corpus is a list of text documents. You have to convert the tweet text into a corpus to facilitate subsequent steps in text processing.
+
+When analyzing text, you want to ensure that a word is not counted as two different words because the case is different in the two instances. Hence, you need to convert text to lowercase.
+
+In this exercise, you will create a text corpus and convert all characters to lower case.
+
+The cleaned text output from the previous exercise has been pre-loaded as twts_gsub.
+
+The library tm has been pre-loaded for this exercise.
+
+Instructions 1/2
+50 XP
+1
+2
+Convert text in twt_gsub data frame to a text corpus.
+
+```{r}
+# Convert text in "twt_gsub" dataset to a text corpus and view output
+twt_corpus <- twt_gsub %>% 
+                VectorSource() %>% 
+                Corpus() 
+head(twt_corpus$content)
+
+# Convert the corpus to lowercase
+twt_corpus_lwr <- tm_map(twt_corpus, tolower) 
+
+# View the corpus after converting to lowercase
+head(twt_corpus_lwr$content)
+```
+
+ou have built a corpus from the tweet text and converted the characters in the corpus to lowercase. Let's proceed to the final exercise on processing twitter text.
+
+## Remove stop words and additional spaces
+
+The text corpus usually has many common words like a, an, the, of, and but. These are called stop words.
+
+Stop words are usually removed during text processing so one can focus on the important words in the corpus to derive insights.
+
+Also, the additional spaces created during the removal of special characters, punctuation, numbers, and stop words need to be removed from the corpus.
+
+The corpus that you created in the last exercise has been pre-loaded as twt_corpus_lwr.
+
+The library tm has been pre-loaded for this exercise.
+
+Instructions 1/2
+50 XP
+1
+2
+Remove English stop words from the corpus twt_corpus_lwr.
+
+Take Hint (-15 XP)
+
+```{r}
+# Remove English stop words from the corpus and view the corpus
+twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("english"))
+head(twt_corpus_stpwd$content)
+
+# Remove additional spaces from the corpus
+twt_corpus_final <- tm_map(twt_corpus_stpwd, stripWhitespace)
+
+# View the text corpus after removing spaces
+head(twt_corpus_final$content)
+```
+
+You can see some of the common stop words and all the additional spaces removed in the output. You have practiced the steps involved in processing twitter text. Let's visualize the processed text in the next lesson.
+
+## Removing custom stop words
+
+Popular terms in a text corpus can be visualized using bar plots or word clouds.
+
+However, it is important to remove custom stop words present in the corpus first before using the visualization tools.
+
+In this exercise, you will check the term frequencies and remove custom stop words from the text corpus that you had created for "telemedicine".
+
+The text corpus has been pre-loaded as twt_corpus.
+
+The libraries qdap and tm have been pre-loaded for this exercise.
+
+Instructions 1/2
+100 XP
+1
+2
+Extract term frequencies for the top 60 words from twt_corpus.
+
+```{r}
+# Extract term frequencies for top 60 words and view output
+termfreq  <-  freq_terms(twt_corpus, 60)
+termfreq
+
+# Create a vector of custom stop words
+custom_stopwds <- c("telemedicine", " s", "amp", "can", "new", "medical", 
+				"will", "via", "way",  "today", "come", "t", "ways", 
+                "say", "ai", "get", "now")
+
+# Remove custom stop words and create a refined corpus
+corp_refined <- tm_map(twt_corpus,removeWords, custom_stopwds) 
+
+# Extract term frequencies for the top 20 words
+termfreq_clean <- freq_terms(corp_refined, 20)
+termfreq_clean
+```
+
+ou can see that the corpus has only the relevant and important terms after the custom stop words are removed. Let's use this refined corpus to create visualizations in the next two exercises.
+
+## isualize popular terms with bar plots
+
+Bar plot is a simple yet popular tool used in data visualization.
+
+It quickly helps summarize categories and their values in a visual form.
+
+In this exercise, you will create bar plots for the popular terms appearing in a text corpus.
+
+The refined text corpus that you created for "telemedicine" has been pre-loaded as corp_refined.
+
+The libraries qdap and ggplot2 have been pre-loaded for this exercise.
+
+```{r}
+# Extract term frequencies for the top 25 words
+termfreq_25w <- freq_terms(corp_refined, 25)
+termfreq_25w
+
+# Identify terms with more than 50 counts from the top 25 list
+term50 <- subset(termfreq_25w, FREQ > 50)
+term50
+
+# Create a bar plot using terms with more than 50 counts
+ggplot(term50, aes(x = reorder(WORD, -FREQ), y = FREQ)) +
+		geom_bar(stat = "identity", fill = "blue") + 
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+ou can see that terms like healthcare, telehealth, care, and technology are most popular in tweets on the subject ‘telemedicine’. Bar plots quickly help summarize these popular terms in an easily interpretable form.
+
+## Word clouds for visualization
+
+A word cloud is an image made up of words in which the size of each word indicates its frequency.
+
+It is an effective promotional image for marketing campaigns.
+
+In this exercise, you will create word clouds using the words in a text corpus.
+
+The refined text corpus that you created for "telemedicine" has been pre-loaded as corp_refined.
+
+The libraries wordcloud and RColorBrewer have been pre-loaded for this exercise.
+
+```{r}
+# Create word cloud with 6 colors and max 50 words
+wordcloud(corp_refined, max.words = 50, 
+    colors = brewer.pal(6, "Dark2"), 
+    scale=c(4,1), random.order = FALSE)
+```
+
+You can see that popular terms like healthcare, health, and telehealth are in large font sizes and positioned at the center of the word cloud to highlight their relevance and importance.
+
+## The LDA algorithm
+
+The document term matrix and the number of topics are the inputs for the LDA() function in R.
+
+## Create a document term matrix
+
+The document term matrix or DTM is a matrix representation of a corpus.
+
+Creating the DTM from the text corpus is the first step towards building a topic model.
+
+Can you create a DTM from the pre-loaded corpus on "Climate change" called corpus_climate?
+
+The library tm has been pre-loaded for this exercise.
+
+```{r}
+
+```
 
