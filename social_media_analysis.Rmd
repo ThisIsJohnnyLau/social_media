@@ -1,5 +1,5 @@
 ---
-title: "Social Media Analysis"
+title: "TEDxGlasgow - Social Media Analysis"
 output:
   html_document:
     output_dir: "html"
@@ -11,6 +11,26 @@ output:
   pdf_document: default
 
 ---
+
+<div class="blame">
+  author: "Jonathan Lau"<br>
+</div>
+
+# Introduction  
+
+This report showcases the power of R for social media analysis - Twitter in this specific case.  The analysis below is only cursory and was prepared over a few days.  The example code below focusses on generating insight for TEDxGlasgow and the topic of climate from Twitter data.  The note below provides some context when reading this report.     
+
+***NB***  
+
+* This document was prepared without full access to Twitter API  
+* It should only be used / read as a proof of concept and technical ability  
+* This was cobbled together quickly and has not been reviewed  
+* Any analysis or commentary is subject to change  
+
+
+I have applied to Twitter for a developer licence to see what data options I have as an individual.  A higher tier of access would provide for more comprehensive and historical analysis.
+
+
 
 # Understanding Twitter data
 
@@ -25,7 +45,7 @@ The volume and velocity of tweets posted on twitter every second is an indicator
 
 The enormous amount of information available, from the tweet text and its metadata, gives great scope for analyzing extracted tweets and deriving insights.
 
-The following code extracts a 1% random sample of live tweets using `stream_tweets()` for a 10 second window and saves it into a data frame.
+The following code extracts a 1% random sample of live tweets using `stream_tweets()` for a 30 second window and saves it into a data frame.
 
 The dimensions of the data frame will give insights about the number of live tweets extracted and the number of columns that contain the actual tweeted text and metadata on the tweets.
 
@@ -39,16 +59,17 @@ library(tidyverse)
 
 
 ```{r}
-# # Extract live tweets for 10 seconds window
-# tweets30s <- stream_tweets("", timeout = 30)
-# 
-# # View dimensions of the data frame with live tweets
-# dim(tweets10s)
+# Extract live tweets for 30 seconds window
+tweets30s <- stream_tweets("", timeout = 30)
+
+# View dimensions of the data frame with live tweets
+dim(tweets30s)
 ```
 
-[You can see that a 1% sample of tweets, streamed in 10 seconds, has generated 6878 tweets and 90 columns of information on the tweets. Let's explore and analyze this rich information in the forthcoming lessons.
+***Comment***  
 
-Twitter allows the extraction of only a limited number of tweets with a free account.]
+[Twitter allows the extraction of only a limited number of tweets with a free account.]
+
 
 ## Search and extract tweets
 
@@ -62,12 +83,13 @@ The function returns a maximum of 18,000 tweets for each request posted.
 ```{r}
 # Extract tweets on "#TedXGlasgow" and include retweets    
 twts_tedx <- search_tweets("TEDxGlasgow", 
-                 n = 3000, 
+                 n = 18000, 
                  include_rts = TRUE, 
                  lang = "en")
 
-# View output for the first 5 columns and 10 rows
-head(twts_tedx[,1:5], 10)
+# View tweets
+twts_tedx %>% 
+  relocate(text, screen_name)
   
 
 
@@ -77,8 +99,9 @@ twts_tedx_climate <- search_tweets("TEDxGlaClimate",
                  include_rts = TRUE, 
                  lang = "en")
 
-# View output for the first 5 columns and 10 rows
-head(twts_tedx[,1:5], 10)
+# View tweets
+twts_tedx_climate %>% 
+  relocate(text, screen_name)
 ```
 
 You can see various tweets posted by users.
@@ -91,14 +114,14 @@ The `get_timeline()` function is different from `search_tweets()`. It extracts t
 
 The `get_timeline()` function can extract upto 3200 tweets at a time.
 
-Tweets posted by TedXGlasgow are extracted below.
+Tweets posted by TedXGlasgow to their timeline are extracted below.
 
 ```{r}
 # Extract tweets posted by the user @TedXGlasgow
 get_TedX <- get_timeline("@TedXGlasgow", n = 3200)
 
 # View output
-print(get_TedX)
+get_TedX
 ```
 
 ***Comment***  
@@ -173,7 +196,10 @@ rownames(rtwt_unique) <- NULL
 head(rtwt_unique)
 ```
 
-You have learned use cases of key components present in extracted twitter data. The output shows tweets on Artificial Intelligence that were retweeted the most. Let's continue our learning with the next chapter.
+***Comment***  
+  
+  
+  
 
 # Analyzing Twitter data
   
@@ -211,29 +237,24 @@ You can use the language filter with a search query to filter tweets based on th
 
 The filter extracts tweets that have been classified by Twitter as being of a particular language.
 
-Can you extract tweets posted in French on the topic "Apple iphone"?
-
-The library rtweet has been pre-loaded for this exercise.
-
 
 ```{r}
 # Extract tweets on "Climate" in French
 tweets_french <- search_tweets("Climate", lang = "fr")
 
-# Display the tweets
-head(tweets_french$text)
+# Display the tweets and language metadata
+tweets_french %>% 
+  select(text, lang)
 
-# Display the tweet metadata showing the language
-head(tweets_french$lang)
 ```
 
 ## Filter based on tweet popularity
 
-Popular tweets are tweets that are retweeted and favorited several times.
+Popular tweets are tweets that are retweeted and favourited several times.
 
 They are useful in identifying current trends. A brand can promote its merchandise and build brand loyalty by identifying popular tweets and retweeting them.
 
-In this exercise, you will extract tweets on "TEDx" that have been retweeted a minimum of 100 times and also favorited at least by 100 users.
+The code below extracts tweets on "TEDx" that have been retweeted a minimum of 100 times and also favorited at least by 100 users.
 
 
 ```{r}
@@ -270,11 +291,11 @@ head(user_cos)
 # Aggregate screen name, follower and friend counts
 counts_df <- user_cos %>%
                group_by(screen_name) %>%
-               summarise(follower = mean(followers_count),
-                   friend = mean(friends_count))
+               summarise(follower = mean(followers_count, na.rm = TRUE),
+                   friend = mean(friends_count, na.rm = TRUE))
 
 # View the output
-head(counts_df)
+counts_df
 ```
 
 
@@ -303,7 +324,7 @@ counts_sort[counts_sort$follower>50000,]
 counts_sort[counts_sort$follower<1000,]
 ```
 
-Users having a high follower count also have a high positive ratio. These users can be used as a medium to promote a cosmetic brand to a wide audience.
+Users having a high follower count should have a high positive ratio too. These users can be used as a medium to promote a brand to a wide audience.
 
 
 ## Subscribers to twitter lists
@@ -312,31 +333,32 @@ A twitter list is a curated group of twitter accounts.
 
 Twitter users subscribe to lists that interest them. Collecting user information from twitter lists could help brands promote products to interested customers.
 
-In this exercise, you will extract lists of the twitter account of "TEDxGlasgow".
+The code below extracts lists of the twitter account of "TEDxGlasgow".
 
 ```{r}
-# library(tidyverse)
-# 
-# # Extract all the lists "TEDx" subscribes to and view the first 4 columns
-# lst_TEDx <- lists_users("TEDxGlasgow")
-# 
-# lst_TEDx %>% 
-#     arrange(desc(subscriber_count)) %>% 
-#   head()
-# 
-# # Extract subscribers of the list "TEDx" and view the first 4 columns
-# list_TED_sub <- lists_subscribers("9783131", n = 500) %>% 
-#     arrange(followers_count)
-# 
-# list_TED_sub[,1:4]
-# 
-# # Create a list of top screen names from the subscribers list
-# users <- list_TED_sub$screen_name %>% 
-#     head()
-# 
-# # Extract user information for the list and view the first 4 columns
-# users_TEDx_sub <- lookup_users(users)
-# users_TEDx_sub
+# Loading library
+library(tidyverse)
+
+# Extract all the lists "TEDx" subscribes to and view the first 4 columns
+lst_TEDx <- lists_users("TEDxGlasgow")
+
+lst_TEDx %>%
+    arrange(desc(subscriber_count)) %>%
+  head()
+
+# Extract subscribers of the list "TEDx" and view the first 4 columns
+list_TED_sub <- lists_subscribers("9783131", n = 500) %>%
+    arrange(followers_count)
+
+list_TED_sub[,1:4]
+
+# Create a list of top screen names from the subscribers list
+users <- list_TED_sub$screen_name %>%
+    head()
+
+# Extract user information for the list and view the first 4 columns
+users_TEDx_sub <- lookup_users(users)
+users_TEDx_sub
 ```
 
 
@@ -379,14 +401,18 @@ head(gt_city[,1:6])
 # Aggregate the trends and tweet volumes
 trend_df <- gt_city %>%
     group_by(trend) %>%
-    summarise(tweet_vol = mean(tweet_volume))
+    summarise(tweet_vol = mean(tweet_volume, na.rm = TRUE))
 
 # Sort data frame on descending order of tweet volumes and print header
 trend_df_sort <- arrange(trend_df, desc(tweet_vol))
 head(trend_df_sort,10)
 ```
 
-The most-tweeted trend in Glasgow was 'yeonjun' a Kpop star! This trend considered when promoting a music-related event.  The latest print is #Gray (because of Eastenders??)
+***Trends can change quickly***  
+The most-tweeted trend in Glasgow has recently been:
+* 'yeonjun' a Kpop star!  
+* #Gray (because of Eastenders??)
+* #Fridaythoughts
 
 
 ## Visualizing frequency of tweets
@@ -408,7 +434,7 @@ ts_plot(ClimateCrisis_twts, by = "hours", color = "blue")
 ```
 
 ***Comment***  
-ClimateCrisis appears to have a cyclical pattern over the days available - with lowering peaks most recently.
+ClimateCrisis appears to have a cyclical pattern over the days accessed - with lowering peaks most recently.
 
 ## Create time series objects
 
@@ -428,9 +454,8 @@ TEDxGlasgow_ts <- ts_data(twts_tedx, by = "hours")
 # Rename the two columns in the time series object
 names(TEDxGlasgow_ts) <- c("time", "TEDxGlasgow_n")
 
-# View datax
-TEDxGlasgow_ts %>% 
-    view()
+# View data
+TEDxGlasgow_ts
 ```
 
 ```{r}
@@ -441,8 +466,7 @@ TEDxGlaClimate_ts <- ts_data(twts_tedx_climate, by = "hours")
 names(TEDxGlaClimate_ts) <- c("time", "TEDxGlasClimate_n")
 
 # View datax
-TEDxGlaClimate_ts %>% 
-    view()
+TEDxGlaClimate_ts
 ```
 
 
@@ -461,8 +485,7 @@ tedsummit2019_ts <- ts_data(twts_tedsummit2019, by = "hours")
 names(tedsummit2019_ts) <- c("time", "edin_n") 
 
 # View data
-tedsummit2019_ts %>% 
-    view()
+tedsummit2019_ts
 ```
 
 Time series objects aggregate tweet frequencies over time. They are useful for creating time series plots for comparison.
@@ -472,9 +495,11 @@ Time series objects aggregate tweet frequencies over time. They are useful for c
 
 The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare "brand" salience for two competing tags, TEDxGlaClimate and ClimateCrisis.
 
-```{r}
+```{r message=FALSE}
 library(reshape)
+```
 
+```{r}
 # Merge the two time series objects and retain "time" column
 merged_df <- merge(TEDxGlasgow_ts, TEDxGlaClimate_ts, by = "time", all = TRUE)
 head(merged_df)
@@ -491,7 +516,7 @@ ggplot(data = melt_df, aes(x = time, y = value, col = variable)) +
 ```
 
 ***Comments***  
-For the data available, TEDxGlasClimate seems to have different activity from the main Twitter handle; apart from the peak around Oct 10th.
+For the data accessed, TEDxGlasClimate seems to have somewhat different activity from the main Twitter handle; apart from the peak around Oct 10th.
 
 
 # Visualize Tweet texts
@@ -504,15 +529,15 @@ Tweet text posted by twitter users is unstructured, noisy, and raw.
 
 It contains emoticons, URLs, and numbers. This redundant information has to be cleaned before analysis in order to yield reliable results.
 
-The code below removes URLs and replaces characters other than letters with spaces.
+The code below removes URLs and replaces characters other than letters with spaces from ClimateCrisis tweets.
 
 
-```{r}
+```{r message=FALSE}
 # Loading Regex library
 library(qdapRegex)
 
 # Extract tweet text from ClimateCrisis dataset
-twt_txt <- twts_tedx_climate$text
+twt_txt <- ClimateCrisis_twts$text
 head(twt_txt)
 
 # Remove URLs from the tweet text and view the output
@@ -537,7 +562,7 @@ When analyzing text, you want to ensure that a word is not counted as two differ
 The code will create a text corpus and convert all characters to lower case.
 
 
-```{r}
+```{r message=FALSE}
 # Loading text mining library
 library(tm)
 
@@ -569,7 +594,7 @@ Also, the additional spaces created during the removal of special characters, pu
 
 ```{r}
 # Remove English stop words from the corpus and view the corpus
-twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("english"))
+twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("en"))
 head(twt_corpus_stpwd$content)
 
 # Remove additional spaces from the corpus
@@ -585,13 +610,13 @@ You can see some of the common stop words and all the additional spaces removed 
 
 Popular terms in a text corpus can be visualized using bar plots or word clouds.
 
-However, it is important to remove custom stop words present in the corpus first before using the visualization tools.
+However, it is important to remove (custom) stop words present in the corpus first before using the visualization tools.
 
-The code below will check the term frequencies and remove custom stop words from the text corpus created for "ClimateCrisis".
+The code below will check the term frequencies and remove (custom) stop words from the text corpus created for "ClimateCrisis".
 
 
 
-```{r}
+```{r message=FALSE}
 # Loading library for text analysis
 library(qdap)
 
@@ -600,12 +625,12 @@ termfreq  <-  freq_terms(twt_corpus, 60)
 termfreq
 
 # Create a vector of custom stop words
-# custom_stopwds <- c("s", "amp", "can", "new", "medical", 
+# custom_stopwds <- c(""s", "amp", "can", "new", "medical", 
 # 				"will", "via", "way",  "today", "come", "t", "ways", 
-#                 "say", "ai", "get", "now")
+#                 "say", "ai", "get", "now", "the")
 
 # Remove custom stop words and create a refined corpus
-corp_refined <- tm_map(twt_corpus,removeWords, stopwords("english")) 
+corp_refined <- tm_map(twt_corpus,removeWords, stopwords("en")) 
 
 # Extract term frequencies for the top 20 words
 termfreq_clean <- freq_terms(corp_refined, 20)
@@ -662,11 +687,14 @@ wordcloud(corp_refined, max.words = 50,
     scale=c(4,1), random.order = FALSE)
 ```
 
+***Comment***  
 You can see that popular terms like climate and wedonthavetime are in large font sizes and positioned at the center of the word cloud to highlight their relevance and importance.
 
 ## The LDA algorithm
 
-The document term matrix and the number of topics are the inputs for the LDA() function in R.
+Latent Dirichlet Allocation algorithm is used for topic modeling.
+
+The document term matrix and the number of topics are input into the `LDA()`function.
 
 ## Create a document term matrix
 
@@ -675,19 +703,20 @@ The document term matrix or DTM is a matrix representation of a corpus.
 Creating the DTM from the text corpus is the first step towards building a topic model.
 
 ```{r}
-# Create a document term matrix (DTM) for TEDxGlaClimate
-dtm_TEDxGlaClimate <- DocumentTermMatrix(corp_refined)
-dtm_TEDxGlaClimate
+# Create a document term matrix (DTM) for ClimateCrisis
+dtm_ClimateCrisis <- DocumentTermMatrix(corp_refined)
+dtm_ClimateCrisis
 
 # Find the sum of word counts in each document
-rowTotals <- apply(dtm_TEDxGlaClimate, 1, sum)
+rowTotals <- apply(dtm_ClimateCrisis, 1, sum)
 head(rowTotals)
 
 # Select rows with a row total greater than zero
-dtm_TEDxGlaClimate_new <- dtm_TEDxGlaClimate[rowTotals > 0, ]
-dtm_TEDxGlaClimate_new
+dtm_ClimateCrisis_new <- dtm_ClimateCrisis[rowTotals > 0, ]
+dtm_ClimateCrisis_new
 ```
 
+***Comment***  
 You can see that the final DTM has 233 documents and 355 terms. The code below will use this DTM to perform topic modeling
 
 ## Create a topic model
@@ -708,7 +737,7 @@ library(topicmodels)
 
 ```{r}
 # Create a topic model with 5 topics
-topicmodl_5 <- LDA(dtm_TEDxGlaClimate_new, k = 5)
+topicmodl_5 <- LDA(dtm_ClimateCrisis_new, k = 5)
 
 # Select and view the top 10 terms in the topic model
 top_10terms <- terms(topicmodl_5, 10)
@@ -717,7 +746,7 @@ top_10terms
 ```
 
 ***Comment***  
-Sustainability, carbon, energy, water, and global warming aren't in the top topics.  The process can be repeated for ClimateCrisis for comparison.
+By comparison for TEDxGlaClimate, sustainability, carbon, energy, water, and global warming aren't in the top topics.  
 
 ## Extract sentiment scores
 
@@ -725,12 +754,12 @@ Sentiment analysis is useful in social media monitoring since it gives an overvi
 
 Climate change is a widely discussed topic for which the perceptions range from being a severe threat to nothing but a hoax.
 
-In this exercise, you will perform sentiment analysis and extract the sentiment scores for tweets on "Climate change".
+The code below will perform sentiment analysis and extract the sentiment scores for tweets on "Climate change".
 
 These cam be used to plot and analyze how the collective sentiment varies among people.
 
 
-```{r}
+```{r message=FALSE}
 library(syuzhet)
 
 # Perform sentiment analysis for tweets on `ClimateCrisis` 
@@ -744,9 +773,7 @@ Next, these scores are used to plot the sentiments and analyze the results.
 
 ## Perform sentiment analysis
 
-You have extracted the sentiment scores for tweets on "Climate change" in the previous exercise.
-
-Can we plot and analyze the most prevalent sentiments among people and see how the collective sentiment varies?
+Can we plot and analyze the most prevalent sentiments among people and see how the collective sentiment varies for ClimateCrisis?
 
 ```{r}
 # Calculate sum of sentiment scores
@@ -766,11 +793,13 @@ ggplot(data = score_df2, aes(x = sentiment, y = score, fill = sentiment)) +
        theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-It is interesting to see that positive sentiments collectively outnumber the negative ones.  Trust, anticipation and fear' are notable too.
+***Comment***  
+
+For TEDxGlaClimate, it is interesting to see that positive sentiments collectively outnumber the negative ones.  Trust, anticipation and fear' are notable too.
 
 # Network analysis
 
-Twitter users tweet, like, follow, and retweet creating complex network structures. Finally, we analyze these network structures and visualize the relationships between these individual people as a retweet network. By extracting geolocation data from the tweets we’ll also discover how to display tweet locations on a map, and answer powerful questions such as which states or countries are talking about your brand the most? Geographic data adds a new dimension to the Twitter data analysis.
+Twitter users tweet, like, follow, and retweet creating complex network structures. We can analyse these network structures and visualize the relationships between these individual people as a retweet network. By extracting geolocation data from the tweets we’ll also discover how to display tweet locations on a map, and answer powerful questions such as which states or countries are talking about your brand the most? Geographic data adds a new dimension to the Twitter data analysis.
 
 
 
@@ -778,9 +807,9 @@ Twitter users tweet, like, follow, and retweet creating complex network structur
 
 A retweet network is a network of twitter users who retweet tweets posted by other users.
 
-People who retweet on travel can be potential players for broadcasting messages of a travel portal.
+People who retweet on Climate can be potential players for broadcasting messages of a Climate conference.
 
-The following code will prepare the tweet data on #travel for creating a retweet network.
+For starters, the following code will prepare the tweet data on TEDxGlaClimate for creating a retweet network.
 
 
 ```{r}
