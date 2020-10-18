@@ -625,7 +625,7 @@ termfreq  <-  freq_terms(twt_corpus_spaces, 60)
 termfreq
 
 # Create a vector of custom stop words
-custom_stopwds <- c("amp", "ve", "don")
+custom_stopwds <- c("climatecrisis", "amp", "ve", "don")
 
 # Remove custom stop words and create a refined corpus
 corp_refined <- tm_map(twt_corpus_spaces, removeWords, custom_stopwds) 
