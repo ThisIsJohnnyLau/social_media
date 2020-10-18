@@ -516,7 +516,7 @@ ggplot(data = melt_df, aes(x = time, y = value, col = variable)) +
 ```
 
 ***Comments***  
-For the data accessed, TEDxGlasClimate seems to have somewhat different activity from the main Twitter handle; apart from the peak around Oct 10th.
+For the data accessed (limited by using a free account), #TEDxGlasClimate seems to have somewhat different activity from the main Twitter handle; apart from the peak around Oct 10th.
 
 
 # Visualize Tweet texts
