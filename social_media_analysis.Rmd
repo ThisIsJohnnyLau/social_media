@@ -18,7 +18,7 @@ output:
 
 # Introduction  
 
-This report showcases the power of R for social media analysis - Twitter in this specific case.  The analysis below is only cursory and was prepared over a few days.  The example code below focusses on generating insight for TEDxGlasgow and the topic of climate from Twitter data.  The note below provides some context when reading this report.     
+This report showcases the power of R for social media analysis - Twitter in this specific case.  The analysis below is only cursory and was prepared over a few days.  The example code below focuses on generating insight for TEDxGlasgow and the topic of climate from Twitter data.  The note below provides some context when reading this report.     
 
 ***NB***  
 
@@ -419,7 +419,7 @@ The most-tweeted trend in Glasgow has recently been:
 
 Visualizing the frequency of tweets over time helps understand the interest level over a product.
 
-It would be interesting to check the interest level and recall for ClimateCrisis by visualizing the frequency of tweets.
+It would be interesting to check the interest level and recall for#ClimateCrisis by visualizing the frequency of tweets.
 
 
 ```{r}
@@ -493,7 +493,7 @@ Time series objects aggregate tweet frequencies over time. They are useful for c
 
 ## Compare tweet frequencies for two tags
 
-The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare "brand" salience for two competing tags, TEDxGlaClimate and ClimateCrisis.
+The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare "brand" salience for two competing tags, #TEDxGlaClimate and #ClimateCrisis.
 
 ```{r message=FALSE}
 library(reshape)
@@ -529,14 +529,14 @@ Tweet text posted by twitter users is unstructured, noisy, and raw.
 
 It contains emoticons, URLs, and numbers. This redundant information has to be cleaned before analysis in order to yield reliable results.
 
-The code below removes URLs and replaces characters other than letters with spaces from ClimateCrisis tweets.
+The code below removes URLs and replaces characters other than letters with spaces from#ClimateCrisis tweets.
 
 
 ```{r message=FALSE}
 # Loading Regex library
 library(qdapRegex)
 
-# Extract tweet text from ClimateCrisis dataset
+# Extract tweet text from #ClimateCrisis dataset
 twt_txt <- ClimateCrisis_twts$text
 head(twt_txt)
 
@@ -701,7 +701,7 @@ The document term matrix or DTM is a matrix representation of a corpus.
 Creating the DTM from the text corpus is the first step towards building a topic model.
 
 ```{r}
-# Create a document term matrix (DTM) for ClimateCrisis
+# Create a document term matrix (DTM) for #ClimateCrisis
 dtm_ClimateCrisis <- DocumentTermMatrix(corp_refined)
 dtm_ClimateCrisis
 
@@ -723,7 +723,7 @@ Topic modeling is the task of automatically discovering topics from a vast amoun
 
 You can create topic models from the tweet text to quickly summarize the vast information available into distinct topics and gain insights.
 
-The code below will extract distinct topics from tweets on "".
+The code below will extract distinct topics from tweets on #ClimateCrisis.
 
 
 
@@ -771,7 +771,7 @@ Next, these scores are used to plot the sentiments and analyze the results.
 
 ## Perform sentiment analysis
 
-Can we plot and analyze the most prevalent sentiments among people and see how the collective sentiment varies for ClimateCrisis?
+Can we plot and analyze the most prevalent sentiments among people and see how the collective sentiment varies for#ClimateCrisis?
 
 ```{r}
 # Calculate sum of sentiment scores
