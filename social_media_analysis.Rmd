@@ -45,25 +45,26 @@ The volume and velocity of tweets posted on twitter every second is an indicator
 
 The enormous amount of information available, from the tweet text and its metadata, gives great scope for analyzing extracted tweets and deriving insights.
 
-The following code extracts a 1% random sample of live tweets using `stream_tweets()` for a 30 second window and saves it into a data frame.
+The following code extracts a 1% random sample of live tweets using `stream_tweets()` for a 10 second window and saves it into a data frame.
 
 The dimensions of the data frame will give insights about the number of live tweets extracted and the number of columns that contain the actual tweeted text and metadata on the tweets.
 
 
 ```{r message=FALSE}
 # Load libraries
-library(rtweet)
-library(httpuv)
 library(tidyverse)
+library(httpuv)
+library(rtweet)
+
 ```
 
 
 ```{r}
-# Extract live tweets for 30 seconds window
-tweets30s <- stream_tweets("", timeout = 30)
+# Extract live tweets for 10 seconds window
+tweets10s <- stream_tweets("", timeout = 10)
 
 # View dimensions of the data frame with live tweets
-dim(tweets30s)
+dim(tweets10s)
 ```
 
 ***Comment***  
@@ -83,7 +84,7 @@ The function returns a maximum of 18,000 tweets for each request posted.
 ```{r}
 # Extract tweets on "#TedXGlasgow" and include retweets    
 twts_tedx <- search_tweets("TEDxGlasgow", 
-                 n = 18000, 
+                 n = 5000, 
                  include_rts = TRUE, 
                  lang = "en")
 
@@ -95,7 +96,7 @@ twts_tedx %>%
 
 # Extract tweets on "TEDxGlaClimate" and include retweets    
 twts_tedx_climate <- search_tweets("TEDxGlaClimate", 
-                 n = 18000, 
+                 n = 5000, 
                  include_rts = TRUE, 
                  lang = "en")
 
@@ -254,12 +255,12 @@ Popular tweets are tweets that are retweeted and favourited several times.
 
 They are useful in identifying current trends. A brand can promote its merchandise and build brand loyalty by identifying popular tweets and retweeting them.
 
-The code below extracts tweets on "TEDx" that have been retweeted a minimum of 100 times and also favorited at least by 100 users.
+The code below extracts tweets on "TEDx" that have been retweeted a minimum of 50 times and also favorited at least by 50 users.
 
 
 ```{r}
-# Extract tweets with a minimum of 100 retweets and 100 favorites
-tweets_pop <- search_tweets("TEDx min_retweets:100 AND min_faves:100")
+# Extract tweets with a minimum of 50 retweets and 50 favorites
+tweets_pop <- search_tweets("TEDx min_retweets:50 AND min_faves:50")
 
 # Create a data frame to check retweet and favorite counts
 counts <- tweets_pop[c("retweet_count", "favorite_count")]
@@ -269,7 +270,6 @@ head(counts)
 head(tweets_pop$text)
 ```
 
-You can see that the extracted tweets received a minimum of 100 retweets and 100 favorites. You can also change the minimum value for retweets and favorites from 100 to a higher number if required.
 
 ## Extract user information
 
@@ -318,10 +318,10 @@ counts_sort <- arrange(counts_df, desc(follower))
 head(counts_sort)
 
 # Select rows where the follower count is greater than 50000
-counts_sort[counts_sort$follower>50000,]
+counts_sort[counts_sort$follower > 50000,]
 
 # Select rows where the follower count is less than 1000
-counts_sort[counts_sort$follower<1000,]
+counts_sort[counts_sort$follower < 1000,]
 ```
 
 Users having a high follower count should have a high positive ratio too. These users can be used as a medium to promote a brand to a wide audience.
@@ -331,7 +331,7 @@ Users having a high follower count should have a high positive ratio too. These 
 
 A twitter list is a curated group of twitter accounts.
 
-Twitter users subscribe to lists that interest them. Collecting user information from twitter lists could help brands promote products to interested customers.
+Twitter users subscribe to lists that interest them. Collecting user information from twitter lists could help brands promote products to interested delegates
 
 The code below extracts lists of the twitter account of "TEDxGlasgow".
 
@@ -362,7 +362,7 @@ users_TEDx_sub
 ```
 
 
-You now have extracted user data of potential customers to whom you can promote TEDxGlasgow.
+You now have extracted user data of potential delegates to whom you can promote TEDxGlasgow.
 
 ## Trends by country name
 
@@ -593,15 +593,15 @@ Also, the additional spaces created during the removal of special characters, pu
 
 
 ```{r}
-# Remove English stop words from the corpus and view the corpus
-twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("en"))
+# Remove English stop words from the corpus using SMART dictionary and view the corpus
+twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("smart"))
 head(twt_corpus_stpwd$content)
 
 # Remove additional spaces from the corpus
-twt_corpus_final <- tm_map(twt_corpus_stpwd, stripWhitespace)
+twt_corpus_spaces <- tm_map(twt_corpus_stpwd, stripWhitespace)
 
 # View the text corpus after removing spaces
-head(twt_corpus_final$content)
+head(twt_corpus_spaces$content)
 ```
 
 You can see some of the common stop words and all the additional spaces removed in the output.
@@ -621,16 +621,14 @@ The code below will check the term frequencies and remove (custom) stop words fr
 library(qdap)
 
 # Extract term frequencies for top 60 words and view output
-termfreq  <-  freq_terms(twt_corpus, 60)
+termfreq  <-  freq_terms(twt_corpus_spaces, 60)
 termfreq
 
 # Create a vector of custom stop words
-# custom_stopwds <- c(""s", "amp", "can", "new", "medical", 
-# 				"will", "via", "way",  "today", "come", "t", "ways", 
-#                 "say", "ai", "get", "now", "the")
+custom_stopwds <- c("amp", "ve", "don")
 
 # Remove custom stop words and create a refined corpus
-corp_refined <- tm_map(twt_corpus,removeWords, stopwords("en")) 
+corp_refined <- tm_map(twt_corpus_spaces, removeWords, custom_stopwds) 
 
 # Extract term frequencies for the top 20 words
 termfreq_clean <- freq_terms(corp_refined, 20)
