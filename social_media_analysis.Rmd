@@ -84,7 +84,7 @@ The function returns a maximum of 18,000 tweets for each request posted.
 ```{r}
 # Extract tweets on "#TedXGlasgow" and include retweets    
 twts_tedx <- search_tweets("TEDxGlasgow", 
-                 n = 5000, 
+                 n = 18000, 
                  include_rts = TRUE, 
                  lang = "en")
 
@@ -96,7 +96,7 @@ twts_tedx %>%
 
 # Extract tweets on "TEDxGlaClimate" and include retweets    
 twts_tedx_climate <- search_tweets("TEDxGlaClimate", 
-                 n = 5000, 
+                 n = 18000, 
                  include_rts = TRUE, 
                  lang = "en")
 
@@ -419,7 +419,7 @@ The most-tweeted trend in Glasgow has recently been:
 
 Visualizing the frequency of tweets over time helps understand the interest level over a product.
 
-It would be interesting to check the interest level and recall for#ClimateCrisis by visualizing the frequency of tweets.
+It would be interesting to check the interest level and recall for #ClimateCrisis by visualizing the frequency of tweets.
 
 
 ```{r}
@@ -805,14 +805,14 @@ Twitter users tweet, like, follow, and retweet creating complex network structur
 
 A retweet network is a network of twitter users who retweet tweets posted by other users.
 
-People who retweet on Climate can be potential players for broadcasting messages of a Climate conference.
+People who retweet on #TEDxGlasgow can be potential players for broadcasting messages of upcoming events.
 
-For starters, the following code will prepare the tweet data on TEDxGlaClimate for creating a retweet network.
+For starters, the following code will prepare the tweet data on #TEDxGlasgow for creating a retweet network.
 
 
 ```{r}
 # Extract source vertex and target vertex from the tweet data frame
-rtwt_df <- twts_tedx_climate[, c("screen_name" , "retweet_screen_name" )]
+rtwt_df <- twts_tedx[, c("screen_name" , "retweet_screen_name" )]
 
 # View the data frame
 head(rtwt_df)
@@ -825,4 +825,225 @@ rtwt_matrx <- as.matrix(rtwt_df_new)
 head(rtwt_matrx)
 ```
 
+
+## Create a retweet network
+
+The core step in network analysis is to create a network object like a retweet network as it helps analyze the inter-relationships between the nodes.
+
+Understanding the position of potential customers on a retweet network allows a brand to identify key players who are likely to retweet posts to spread brand messaging.
+
+
+
+```{r message=FALSE}
+library(igraph)
+```
+
+```{r}
+# Convert the matrix to a retweet network
+nw_rtweet <- graph_from_edgelist(el = rtwt_matrx, directed = TRUE)
+
+# View the retweet network
+print.igraph(nw_rtweet)
+```
+
+***Comment***  
+Number of edges and vertices.  Source and target vertices in network....
+
+
+## Network centrality measures  
+* Influence of a vertex is measured by the number of edges and its position  
+* Network centrality is the measure of importance of a vertex in a network  
+* Network centrality measures assign a numerical value to each vertex  
+* Value is a measure of a vertex's influence on other vertices
+
+## Calculate out-degree scores
+
+In a retweet network, the out-degree of a user indicates the number of times the user retweets posts.
+
+Users with high out-degree scores are key players who can be used as a medium to retweet promotional posts.
+
+```{r}
+# Calculate out-degree scores from the retweet network
+out_degree <- degree(nw_rtweet, mode = c("out"))
+
+# Sort the out-degree scores in decreasing order
+out_degree_sort <- sort(out_degree, decreasing = TRUE)
+
+# View users with the top 10 out-degree scores
+out_degree_sort[1:10]
+```
+
+
+***Comment***  
+You now have 10 users who can be key players to promote posts for a conferences through their retweets.
+
+## Compute the in-degree scores
+
+In a retweet network, the in-degree of a user indicates the number of times the user's posts are retweeted.
+
+Users with high in-degrees are influential as their tweets are retweeted many times.
+
+
+```{r}
+# Compute the in-degree scores from the retweet network
+in_degree <- degree(nw_rtweet, mode = c("in"))
+
+# Sort the in-degree scores in decreasing order
+in_degree_sort <- sort(in_degree, decreasing = TRUE)
+
+# View users with the top 10 in-degree scores
+in_degree_sort[1:10]
+```
+
+You have identified 10 influential users who can be used to initiate branding messages for TEDxGlasgow.
+
+## Calculate the betweenness scores
+
+Betweenness centrality represents the degree to which nodes stand between each other.
+
+In a retweet network, a user with a high betweenness centrality score would have more control over the network because more information will pass through the user.
+
+The code below identifies users who are central to people who retweet the most and those whose tweets are retweeted frequently.  
+
+```{r}
+# Calculate the betweenness scores from the retweet network
+betwn_nw <- betweenness(nw_rtweet, directed = TRUE)
+
+# Sort betweenness scores in decreasing order and round the values
+betwn_nw_sort <- betwn_nw %>%
+                    sort(decreasing = TRUE) %>%
+                    round()
+
+# View users with the top 10 betweenness scores 
+betwn_nw_sort[1:10]
+```
+
+***Comment***  
+These are critical users who act as bridges for information flow between users who initiate brand messaging and users who promote such posts through their retweets.
+
+
+## Create a network plot with attributes
+
+Visualization of twitter networks helps understand complex networks in an easier and appealing way.
+
+You can format a plot to enhance the readability and improve its visual appeal.
+
+The code below visualises a retweet network on #TEDxGlasgow.
+
+```{r}
+# Create a basic network plot
+plot.igraph(nw_rtweet)
+
+# Create a network plot with formatting attributes
+plot(nw_rtweet, asp = 9/12, 
+     vertex.size = 10,
+	   vertex.color = "green", 
+     edge.arrow.size = 0.5,
+     edge.color = "black",
+     vertex.label.cex = 0.9,
+     vertex.label.color = "black")
+```
+
+***Comment***  
+
+We have an interesting network plot having multiple groups of users who tweet and retweet on #TEDxGlasgow
+
+
+## Network plot based on centrality measure
+
+It will be more meaningful if the vertex size in the plot is proportional to the number of times the user retweets.
+
+The code below, adds attributes such that the vertex size is indicative of the number of times the user retweets.
+
+```{r}
+# Create a variable for out-degree
+deg_out <- degree(nw_rtweet, mode = c("out"))
+deg_out
+
+# Amplify the out-degree values
+vert_size <- (deg_out * 3) + 5
+
+# Set vertex size to amplified out-degree values
+plot(nw_rtweet, asp = 10/11, 
+     vertex.size = vert_size, vertex.color = "lightblue",
+     edge.arrow.size = 0.5,
+     edge.color = "grey",
+     vertex.label.cex = 0.8,
+     vertex.label.color = "black")
+```
+The vertex size in the plot is now proportionate to the out-degree. Vertices with bigger circles are the users who retweet more.
+
+
+## Follower count to enhance the network plot
+
+The users who retweet most will add more value if they have a high follower count as their retweets will reach a wider audience.
+
+In a network plot, the combination of vertex size indicating the number of retweets by a user and vertex color indicating a high follower count provides clear insights on the most influential users who can promote a brand.
+
+The code below creates a plot showing the most influential users.
+
+
+```{r}
+# Create a column and categorize follower counts above and below 500
+user_cos$follow <- ifelse(user_cos$followers_count > 500, "1", "0")
+head(user_cos)
+
+# Assign the new column as vertex attribute to the retweet network
+V(nw_rtweet)$followers <- user_cos$follow
+vertex_attr(nw_rtweet)
+
+# Set the vertex colors based on follower count and create a plot
+sub_color <- c("lightgreen", "tomato")
+plot(nw_rtweet, asp = 9/12,
+     vertex.size = vert_size, edge.arrow.size = 0.5,
+     vertex.label.cex = 0.8,
+     vertex.color = sub_color[as.factor(vertex_attr(nw_rtweet, "followers"))],
+     vertex.label.color = "black", vertex.frame.color = "grey")
+```
+
+This shows the most influential users in the network. The vertices colored light green are these users as they retweet the most and also have a high number of followers.
+
+## Extract geolocation coordinates
+
+Analysing the geolocation of tweets helps influence customers with targeted marketing.
+
+The first step in analyzing geolocation data using maps is to extract the available geolocation coordinates.
+
+```{r}
+# Extract geo-coordinates data to append as new columns
+cc_coord <- lat_lng(ClimateCrisis_twts)
+
+# View the columns with geo-coordinates for first 20 tweets
+head(cc_coord[c("lat","lng")], 20)
+```
+
+***Comment***  
+Output shows NA values for the first 20 rows as these tweets did not include the geolocation data
+
+## Twitter data on the map
+
+It will be interesting to visualize tweets on "#ClimateCrisis" on the map to see regions from where they are tweeted the most.A brand promoting vegan products can target people in these regions for their marketing.
+
+Remember not all tweets will have the geolocation data as this is an optional input for the users.
+
+```{r}
+library(maps)
+
+# Omit rows with missing geo-coordinates in the data frame
+cc_geo <- na.omit(cc_coord[,c("lat", "lng")])
+
+# View the output
+head(cc_geo)
+
+# Plot longitude and latitude values of tweets on the US state map
+map(database = "state", fill = TRUE, col = "light yellow")
+with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
+
+# Plot longitude and latitude values of tweets on the world map
+map(database = "world", fill = TRUE, col = "light yellow")
+with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
+```
+
+***Comment***  
+#ClimateCrisis used most in Europe,  US East Coast and India.
 
