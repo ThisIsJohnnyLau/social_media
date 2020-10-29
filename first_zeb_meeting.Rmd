@@ -1,0 +1,24 @@
+---
+title: "Call with Zeb"
+output:
+  html_document:
+    output_dir: "html"
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    # css: ../../../styles.css
+  pdf_document: default
+
+---
+
+<div>
+  author: Jonathan Lau<br>
+  date: 29/10/2020<br>
+</div>
+
+Finding ways to encourage people to pledge with us is of interest.
+
+Finding climate action and sustainability stories from people and organisations we could share is of interest.
+
+Building a model that helps us target our marketing to meet those audience's is what would be super

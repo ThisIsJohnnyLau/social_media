@@ -13,7 +13,7 @@ output:
 ---
 
 <div>
-  author: "Jonathan Lau"<br>
+  author: Jonathan Lau<br>
 </div>
 
 # Key info  
@@ -78,7 +78,8 @@ The right organisations will be in a position to take a concerted stance on inte
 * Companies house - on-brand CSR efforts, sectors, employee sizes, create list of CSR officers / senior contacts,
 * Charities register - not exlusively climate related.  Climate change effects everyone!  
 * Historic conference / initiatives participation  
-* Existing parters of [#countusin](https://www.count-us-in.org/partners/) * Existing hubs of [#countusin](https://www.count-us-in.org/hubs/)   
+* Existing parters of [#countusin](https://www.count-us-in.org/partners/)  
+* Existing hubs of [#countusin](https://www.count-us-in.org/hubs/)   
 
 ***Examples***   
 * @UNFCCC  

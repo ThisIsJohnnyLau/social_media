@@ -13,7 +13,7 @@ output:
 ---
 
 <div class="blame">
-  author: "Jonathan Lau"<br>
+  author: Jonathan Lau<br>
 </div>
 
 # Introduction  
