@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r message=FALSE}
+# Load libraries
+library(tidyverse)
+library(httpuv)
+library(rtweet)
+
+```
+
+
+
+```{r}
+# Extract tweets on "#TedXGlasgow" and include retweets    
+twts_tedx <- search_tweets("TEDxGlasgow", 
+                 n = 18000, 
+                 include_rts = TRUE, 
+                 lang = "en")
+
+# View tweets
+twts_tedx %>% 
+  relocate(text, screen_name)
+  
+
+
+# Extract tweets on "TEDxGlaClimate" and include retweets    
+twts_tedx_climate <- search_tweets("TEDxGlaClimate", 
+                 n = 18000, 
+                 include_rts = TRUE, 
+                 lang = "en")
+
+# View tweets
+twts_tedx_climate %>% 
+  relocate(text, screen_name)
+```
+

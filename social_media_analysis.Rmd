@@ -953,7 +953,8 @@ We have an interesting network plot having multiple groups of users who tweet an
 
 It will be more meaningful if the vertex size in the plot is proportional to the number of times the user retweets.
 
-The code below, adds attributes such that the vertex size is indicative of the number of times the user retweets.
+The code below, adds attributes such that the vertex size is indicative of the number of times the user retweets.  
+  
 
 ```{r}
 # Create a variable for out-degree
@@ -971,6 +972,9 @@ plot(nw_rtweet, asp = 10/11,
      vertex.label.cex = 0.8,
      vertex.label.color = "black")
 ```
+
+
+
 The vertex size in the plot is now proportionate to the out-degree. Vertices with bigger circles are the users who retweet more.
 
 

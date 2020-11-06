@@ -17,8 +17,22 @@ output:
   date: 29/10/2020<br>
 </div>
 
-Finding ways to encourage people to pledge with us is of interest.
 
-Finding climate action and sustainability stories from people and organisations we could share is of interest.
+```{r echo=FALSE, message=FALSE}
+# Load libraries
+library(tidyverse)
+library(httpuv)
+library(rtweet)
+```
 
-Building a model that helps us target our marketing to meet those audience's is what would be super
+
+***Key points of interest***  
+
+
+Finding ways to encourage people to pledge with us.
+
+
+
+Finding climate action and sustainability stories from people and organisations we could share.
+
+Building a model that helps us target our marketing to meet those audience's is what would be super.
