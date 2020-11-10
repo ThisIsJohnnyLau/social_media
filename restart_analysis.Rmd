@@ -37,3 +37,28 @@ twts_tedx_climate %>%
   relocate(text, screen_name)
 ```
 
+```{r}
+library(readr)
+library(here)
+
+twts_tedx %>% 
+    select(-hashtags:-mentions_screen_name,-geo_coords:-bbox_coords) %>%
+    # unnest(geo_coords:bbox_coords) %>% 
+    # unnest(cols = c(hashtags, symbols, urls_url, urls_t.co, urls_expanded_url, 
+    # media_url, media_t.co, media_expanded_url, media_type, ext_media_url, 
+    # ext_media_t.co, ext_media_expanded_url, mentions_user_id, 
+    # mentions_screen_name, geo_coords, coords_coords, bbox_coords)) %>% 
+    write_csv("raw_data/TEDxGlasgow.csv")
+
+twts_tedx %>% 
+    select(hashtags) %>%
+    unnest() %>%
+    # unnest(cols = c(hashtags, symbols, urls_url, urls_t.co, urls_expanded_url, 
+    # media_url, media_t.co, media_expanded_url, media_type, ext_media_url, 
+    # ext_media_t.co, ext_media_expanded_url, mentions_user_id, 
+    # mentions_screen_name, geo_coords, coords_coords, bbox_coords)) %>% 
+    write_csv("raw_data/TEDxGlasgow_hashtags.csv")
+
+read_csv("raw_data/TEDxGlasgow_hashtags.csv")
+```
+
