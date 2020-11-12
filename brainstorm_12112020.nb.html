@@ -1797,175 +1797,32 @@ summary {
 
 
 <!-- rnb-text-begin -->
+<p>This is an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. When you execute code within the notebook, the results appear beneath the code.</p>
+<p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Cmd+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIGxpYnJhcmllc1xubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGh0dHB1dilcbmxpYnJhcnkocnR3ZWV0KVxuXG5gYGAifQ== -->
-<pre class="r"><code># Load libraries
-library(tidyverse)
-library(httpuv)
-library(rtweet)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RlcHNcblxuYGBgIn0= -->
+<pre class="r"><code>steps
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MCwibnJvdyI6MH0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVAydzZDTUF3dGwybFlncHI0SGV5RkZ6L0ErQUZHRTE0blRDWE9qWXdSL1hxMFEvWWdvY215OXB5ZXR1ZTRMM0phVUFDSUlNWVhFVXlCbkUrSGJBY1FoMWdFU0NUdWYyUFRGb2I0STRqaVQ5RmlzcGtoRTZOZnpEZWtjK3BTOHRhclBVZ3Jiam03R3RSaDFVOGtTOTNZV2lzVWhlNGVNaEVIWmdLc08rVXVxTEx5M3FsSGxyc0ZBLzJMZEQ1M0s4UFBPSXFNb3haQzNXb2wvTzJTWDRRY2l4VTZIWXl5eHRUS2VpZUl0c3hxeTMwZkxiWDB5T0FOK2krbitVNEhoZ0VBQUE9PSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[],"data":[],"options":{"columns":{"min":{},"max":[10],"total":[0]},"rows":{"min":[10],"max":[10],"total":[0]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHd0c190ZWR4ICU+JSBcbiAgICB0b0pTT04oKSAlPiUgXG4gICAgd3JpdGUoaGVyZShcInJhd19kYXRhL3R3dHNfdGVkeC5qc29uXCIpKVxuXG5gYGAifQ== -->
-<pre class="r"><code>twts_tedx %&gt;% 
-    toJSON() %&gt;% 
-    write(here(&quot;raw_data/twts_tedx.json&quot;))
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gdG9KU09OKC4pIDogdW5hYmxlIHRvIGVzY2FwZSBzdHJpbmcuIFN0cmluZyBpcyBub3QgdXRmOFxuIn0= -->
-<pre><code>Error in toJSON(.) : unable to escape string. String is not utf8</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImZseSBsZXNzXCIgICAgICAgICAgICAgIFwiZ3JlZW4geW91ciBtb25leVwiICAgICBcbiBbM10gXCJkcml2ZSBlbGVjdHJpY1wiICAgICAgICBcInN3aXRjaCB5b3VyIGVuZXJneVwiICAgXG4gWzVdIFwiaW5zdWxhdGUgeW91ciBob21lXCIgICAgXCJkaWFsIGl0IGRvd25cIiAgICAgICAgIFxuIFs3XSBcInNwZWFrIHVwIGF0IHdvcmtcIiAgICAgIFwiY3V0IGZvb2Qgd2FzdGVcIiAgICAgICBcbiBbOV0gXCJyZXBhaXIgJiByZS11c2VcIiAgICAgICBcInRlbGwgeW91ciBwb2xpdGljaWFuc1wiXG5bMTFdIFwiZWF0IG1vcmUgcGxhbnRzXCIgICAgICAgXCJ3ZWFyIGNsb3RoZXMgdG8gbGFzdFwiIFxuWzEzXSBcImVhdCBzZWFzb25hbFwiICAgICAgICAgIFwiZ2V0IHNvbWUgc29sYXJcIiAgICAgICBcblsxNV0gXCJ0YWxrIHRvIGZyaWVuZHNcIiAgICAgICBcIndhbGsgJiBjeWNsZSBtb3JlXCIgICAgXG4ifQ== -->
+<pre><code> [1] &quot;fly less&quot;              &quot;green your money&quot;     
+ [3] &quot;drive electric&quot;        &quot;switch your energy&quot;   
+ [5] &quot;insulate your home&quot;    &quot;dial it down&quot;         
+ [7] &quot;speak up at work&quot;      &quot;cut food waste&quot;       
+ [9] &quot;repair &amp; re-use&quot;       &quot;tell your politicians&quot;
+[11] &quot;eat more plants&quot;       &quot;wear clothes to last&quot; 
+[13] &quot;eat seasonal&quot;          &quot;get some solar&quot;       
+[15] &quot;talk to friends&quot;       &quot;walk &amp; cycle more&quot;    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xpbWF0ZV90d3RzIDwtIHNlYXJjaF90d2VldHMoXCJjbGltYXRlXCIsIG4gPSAxODAwMCwgaW5jbHVkZV9ydHMgPSBGQUxTRSlcblxuYGBgIn0= -->
-<pre class="r"><code>climate_twts &lt;- search_tweets(&quot;climate&quot;, n = 18000, include_rts = FALSE)
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5Eb3dubG9hZGluZyBbLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAgMSVcbkRvd25sb2FkaW5nIFs+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gICAyJVxuRG93bmxvYWRpbmcgWz4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgIDMlXG5Eb3dubG9hZGluZyBbPT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAgNCVcbkRvd25sb2FkaW5nIFs9Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gICA1JVxuRG93bmxvYWRpbmcgWz0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgIDYlXG5Eb3dubG9hZGluZyBbPT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAgNiVcbkRvd25sb2FkaW5nIFs9PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gICA3JVxuRG93bmxvYWRpbmcgWz09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgIDglXG5Eb3dubG9hZGluZyBbPT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAgOSVcbkRvd25sb2FkaW5nIFs9PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDEwJVxuRG93bmxvYWRpbmcgWz09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMTElXG5Eb3dubG9hZGluZyBbPT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAxMSVcbkRvd25sb2FkaW5nIFs9PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDEyJVxuRG93bmxvYWRpbmcgWz09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMTMlXG5Eb3dubG9hZGluZyBbPT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAxNCVcbkRvd25sb2FkaW5nIFs9PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDE1JVxuRG93bmxvYWRpbmcgWz09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMTYlXG5Eb3dubG9hZGluZyBbPT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAxNiVcbkRvd25sb2FkaW5nIFs9PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDE3JVxuRG93bmxvYWRpbmcgWz09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMTglXG5Eb3dubG9hZGluZyBbPT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAxOCVcbkRvd25sb2FkaW5nIFs9PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDE5JVxuRG93bmxvYWRpbmcgWz09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMjAlXG5Eb3dubG9hZGluZyBbPT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAyMSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDIxJVxuRG93bmxvYWRpbmcgWz09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMjIlXG5Eb3dubG9hZGluZyBbPT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAyMyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDIzJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMjQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAyNSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDI2JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMjYlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAyNyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDI4JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMjglXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAyOSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDMwJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMzElXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAzMiVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDMzJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMzMlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAzNCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDM1JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMzYlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAzNyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDM4JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgMzglXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICAzOSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDQwJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgNDElXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICA0MiVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDQzJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgNDQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICA0NSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDQ2JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgNDclXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLS1dICA0OCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDQ5JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS0tXSAgNTAlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tLS1dICA1MSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tLV0gIDUyJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS0tXSAgNTMlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLS1dICA1NCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tLV0gIDU1JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLS0tXSAgNTYlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLS1dICA1NyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tLV0gIDU4JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS0tXSAgNTklXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLS1dICA2MCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tLV0gIDYxJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS0tXSAgNjIlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLS1dICA2MiVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tLV0gIDYzJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS0tXSAgNjQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLS1dICA2NSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tLV0gIDY2JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS0tXSAgNjclXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLS1dICA2NyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tLV0gIDY4JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS0tXSAgNjklXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLS1dICA3MCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tLV0gIDcxJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS0tXSAgNzIlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLS1dICA3MiVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tLV0gIDczJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS0tXSAgNzQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS1dICA3NCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tLV0gIDc1JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS0tXSAgNzYlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLS1dICA3NyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tLV0gIDc3JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS0tXSAgNzglXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLS1dICA3OSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLV0gIDc5JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS0tXSAgODAlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLS1dICA4MSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tLV0gIDgyJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS0tXSAgODIlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLS1dICA4MyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tLV0gIDg0JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS0tXSAgODQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLS1dICA4NSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tLV0gIDg2JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS0tXSAgODclXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLS1dICA4OCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tLV0gIDg5JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS0tXSAgODklXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLS1dICA5MCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tLV0gIDkxJVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS0tXSAgOTIlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLS1dICA5MyVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tLV0gIDk0JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi0tXSAgOTQlXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+LS1dICA5NSVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tLV0gIDk2JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT4tXSAgOTclXG5Eb3dubG9hZGluZyBbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pi1dICA5OCVcbkRvd25sb2FkaW5nIFs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Pl0gIDk5JVxuRG93bmxvYWRpbmcgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XSAxMDAlXG4ifQ== -->
-<pre><code>
-Downloading [-----------------------------------------]   1%
-Downloading [&gt;----------------------------------------]   2%
-Downloading [&gt;----------------------------------------]   3%
-Downloading [=&gt;---------------------------------------]   4%
-Downloading [=&gt;---------------------------------------]   5%
-Downloading [=&gt;---------------------------------------]   6%
-Downloading [==&gt;--------------------------------------]   6%
-Downloading [==&gt;--------------------------------------]   7%
-Downloading [==&gt;--------------------------------------]   8%
-Downloading [===&gt;-------------------------------------]   9%
-Downloading [===&gt;-------------------------------------]  10%
-Downloading [===&gt;-------------------------------------]  11%
-Downloading [====&gt;------------------------------------]  11%
-Downloading [====&gt;------------------------------------]  12%
-Downloading [====&gt;------------------------------------]  13%
-Downloading [=====&gt;-----------------------------------]  14%
-Downloading [=====&gt;-----------------------------------]  15%
-Downloading [=====&gt;-----------------------------------]  16%
-Downloading [======&gt;----------------------------------]  16%
-Downloading [======&gt;----------------------------------]  17%
-Downloading [======&gt;----------------------------------]  18%
-Downloading [=======&gt;---------------------------------]  18%
-Downloading [=======&gt;---------------------------------]  19%
-Downloading [=======&gt;---------------------------------]  20%
-Downloading [=======&gt;---------------------------------]  21%
-Downloading [========&gt;--------------------------------]  21%
-Downloading [========&gt;--------------------------------]  22%
-Downloading [========&gt;--------------------------------]  23%
-Downloading [=========&gt;-------------------------------]  23%
-Downloading [=========&gt;-------------------------------]  24%
-Downloading [=========&gt;-------------------------------]  25%
-Downloading [=========&gt;-------------------------------]  26%
-Downloading [==========&gt;------------------------------]  26%
-Downloading [==========&gt;------------------------------]  27%
-Downloading [==========&gt;------------------------------]  28%
-Downloading [===========&gt;-----------------------------]  28%
-Downloading [===========&gt;-----------------------------]  29%
-Downloading [===========&gt;-----------------------------]  30%
-Downloading [============&gt;----------------------------]  31%
-Downloading [============&gt;----------------------------]  32%
-Downloading [============&gt;----------------------------]  33%
-Downloading [=============&gt;---------------------------]  33%
-Downloading [=============&gt;---------------------------]  34%
-Downloading [=============&gt;---------------------------]  35%
-Downloading [==============&gt;--------------------------]  36%
-Downloading [==============&gt;--------------------------]  37%
-Downloading [==============&gt;--------------------------]  38%
-Downloading [===============&gt;-------------------------]  38%
-Downloading [===============&gt;-------------------------]  39%
-Downloading [===============&gt;-------------------------]  40%
-Downloading [================&gt;------------------------]  41%
-Downloading [================&gt;------------------------]  42%
-Downloading [=================&gt;-----------------------]  43%
-Downloading [=================&gt;-----------------------]  44%
-Downloading [=================&gt;-----------------------]  45%
-Downloading [==================&gt;----------------------]  46%
-Downloading [==================&gt;----------------------]  47%
-Downloading [===================&gt;---------------------]  48%
-Downloading [===================&gt;---------------------]  49%
-Downloading [===================&gt;---------------------]  50%
-Downloading [====================&gt;--------------------]  51%
-Downloading [====================&gt;--------------------]  52%
-Downloading [=====================&gt;-------------------]  53%
-Downloading [=====================&gt;-------------------]  54%
-Downloading [======================&gt;------------------]  55%
-Downloading [======================&gt;------------------]  56%
-Downloading [======================&gt;------------------]  57%
-Downloading [=======================&gt;-----------------]  58%
-Downloading [=======================&gt;-----------------]  59%
-Downloading [========================&gt;----------------]  60%
-Downloading [========================&gt;----------------]  61%
-Downloading [========================&gt;----------------]  62%
-Downloading [=========================&gt;---------------]  62%
-Downloading [=========================&gt;---------------]  63%
-Downloading [=========================&gt;---------------]  64%
-Downloading [==========================&gt;--------------]  65%
-Downloading [==========================&gt;--------------]  66%
-Downloading [==========================&gt;--------------]  67%
-Downloading [===========================&gt;-------------]  67%
-Downloading [===========================&gt;-------------]  68%
-Downloading [===========================&gt;-------------]  69%
-Downloading [============================&gt;------------]  70%
-Downloading [============================&gt;------------]  71%
-Downloading [============================&gt;------------]  72%
-Downloading [=============================&gt;-----------]  72%
-Downloading [=============================&gt;-----------]  73%
-Downloading [=============================&gt;-----------]  74%
-Downloading [==============================&gt;----------]  74%
-Downloading [==============================&gt;----------]  75%
-Downloading [==============================&gt;----------]  76%
-Downloading [==============================&gt;----------]  77%
-Downloading [===============================&gt;---------]  77%
-Downloading [===============================&gt;---------]  78%
-Downloading [===============================&gt;---------]  79%
-Downloading [================================&gt;--------]  79%
-Downloading [================================&gt;--------]  80%
-Downloading [================================&gt;--------]  81%
-Downloading [================================&gt;--------]  82%
-Downloading [=================================&gt;-------]  82%
-Downloading [=================================&gt;-------]  83%
-Downloading [=================================&gt;-------]  84%
-Downloading [==================================&gt;------]  84%
-Downloading [==================================&gt;------]  85%
-Downloading [==================================&gt;------]  86%
-Downloading [===================================&gt;-----]  87%
-Downloading [===================================&gt;-----]  88%
-Downloading [===================================&gt;-----]  89%
-Downloading [====================================&gt;----]  89%
-Downloading [====================================&gt;----]  90%
-Downloading [====================================&gt;----]  91%
-Downloading [=====================================&gt;---]  92%
-Downloading [=====================================&gt;---]  93%
-Downloading [=====================================&gt;---]  94%
-Downloading [======================================&gt;--]  94%
-Downloading [======================================&gt;--]  95%
-Downloading [======================================&gt;--]  96%
-Downloading [=======================================&gt;-]  97%
-Downloading [=======================================&gt;-]  98%
-Downloading [========================================&gt;]  99%
-Downloading [=========================================] 100%</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Cmd+Option+I</em>.</p>
+<p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Cmd+Shift+K</em> to preview the HTML file).</p>
+<p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3IgbWVzc2FnZT1GQUxTRX0KIyBMb2FkIGxpYnJhcmllcwpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShodHRwdXYpCmxpYnJhcnkocnR3ZWV0KQoKYGBgCgoKCmBgYHtyfQojIEV4dHJhY3QgdHdlZXRzIG9uICIjVGVkWEdsYXNnb3ciIGFuZCBpbmNsdWRlIHJldHdlZXRzICAgIAp0d3RzX3RlZHggPC0gc2VhcmNoX3R3ZWV0cygiVEVEeEdsYXNnb3ciLCAKICAgICAgICAgICAgICAgICBuID0gMTgwMDAsIAogICAgICAgICAgICAgICAgIGluY2x1ZGVfcnRzID0gVFJVRSwgCiAgICAgICAgICAgICAgICAgbGFuZyA9ICJlbiIpCgojIFZpZXcgdHdlZXRzCnR3dHNfdGVkeCAlPiUgCiAgcmVsb2NhdGUodGV4dCwgc2NyZWVuX25hbWUpCiAgCgoKIyBFeHRyYWN0IHR3ZWV0cyBvbiAiVEVEeEdsYUNsaW1hdGUiIGFuZCBpbmNsdWRlIHJldHdlZXRzICAgIAp0d3RzX3RlZHhfY2xpbWF0ZSA8LSBzZWFyY2hfdHdlZXRzKCJURUR4R2xhQ2xpbWF0ZSIsIAogICAgICAgICAgICAgICAgIG4gPSAxODAwMCwgCiAgICAgICAgICAgICAgICAgaW5jbHVkZV9ydHMgPSBUUlVFLCAKICAgICAgICAgICAgICAgICBsYW5nID0gImVuIikKCiMgVmlldyB0d2VldHMKdHd0c190ZWR4X2NsaW1hdGUgJT4lIAogIHJlbG9jYXRlKHRleHQsIHNjcmVlbl9uYW1lKQpgYGAKCmBgYHtyfQpsaWJyYXJ5KHJlYWRyKQpsaWJyYXJ5KGhlcmUpCmxpYnJhcnkocmpzb24pCgp0d3RzX3RlZHggJT4lIAp3cml0ZV9hc19jc3YoaGVyZSgicmF3X2RhdGEvdHd0c190ZWR4LmNzdiIpLCBwcmVwZW5kX2lkcyA9IFRSVUUsIG5hID0gIiIsIGZpbGVFbmNvZGluZyA9ICJVVEYtOCIpCgpyZWFkX3R3aXR0ZXJfY3N2KGhlcmUoInJhd19kYXRhL3R3dHNfdGVkeC5jc3YiKSkKCnJlYWRfY3N2KCJyYXdfZGF0YS9URUR4R2xhc2dvd19oYXNodGFncy5jc3YiKQpyZWFkX2NzdigicmF3X2RhdGEvVEVEeEdsYXNnb3dfaGFzaHRhZ3MuY3N2IikKYGBgCgpgYGB7cn0KY2xpbWF0ZV90d3RzIDwtIHNlYXJjaF90d2VldHMoImNsaW1hdGUiLCBuID0gMTgwMDAsIGluY2x1ZGVfcnRzID0gRkFMU0UpCgoKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0Kc3RlcHMKYGBgCgpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ21kK09wdGlvbitJKi4KCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ21kK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuIAoKVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLgoK</div>
 
 
 
@@ -2012,7 +1869,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("restart_analysis.Rmd");
+  window.initializeSourceEmbed("brainstorm_12112020.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
