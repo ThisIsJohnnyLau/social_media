@@ -651,7 +651,7 @@ The code below will create bar plots for the popular terms appearing in a text c
 termfreq_25w <- freq_terms(corp_refined, 25)
 termfreq_25w
 
-# Identify terms with more than 10 counts from the top 25 list
+# Identify terms with more than 30 counts from the top 25 list
 term30 <- subset(termfreq_25w, FREQ > 30)
 term30
 
