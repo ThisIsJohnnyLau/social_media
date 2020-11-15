@@ -207,24 +207,26 @@ vert_size <- (deg_out * 3)
 # + 5
 
 #users
-user_cos <- users_data(climate_twts)
+user_cos <- users_data(climate_twts) %>%
+    filter(followers_count > 1000000)
 
 
-# Create a column and categorize follower counts above and below 500
-user_cos$follow <- ifelse(user_cos$followers_count > 500, "1", "0")
+# Create a column and categorize follower counts above and below 2000
+user_cos$follow <- ifelse(user_cos$followers_count > 1000000, "1", "0")
 
 # Assign the new column as vertex attribute to the retweet network
 V(nw_rply)$followers <- user_cos$follow
 vertex_attr(nw_rply)
 
 # Set the vertex colors based on follower count and create a plot
-sub_color <- c("lightgreen", "tomato")
+sub_color <- c("light blue", "light pink")
 
-plot(nw_rply, asp = 9/12,
-     vertex.size = deg_out, edge.arrow.size = 0.5,
-     vertex.label.cex = 0.8,
+plot(nw_rply,
+     # asp = 30/30,
+     vertex.size = deg_out, edge.arrow.size = 0.01,
+     vertex.label.cex = 0.01,
      vertex.color = sub_color[as.factor(vertex_attr(nw_rply, "followers"))],
-     vertex.label.color = "black", vertex.frame.color = "grey")
+     vertex.label.color = "black", vertex.frame.color = "light grey")
 ```
 
 ```{r}
