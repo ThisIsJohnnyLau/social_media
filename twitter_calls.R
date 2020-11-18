@@ -29,3 +29,13 @@ climate_twts <- search_tweets("climate", n = 18000, include_rts = FALSE)
 
 climate_twts %>% 
     write_as_csv(here("raw_data/climate_twts_15112020.csv"), prepend_ids = TRUE, na = "", fileEncoding = "UTF-8")
+
+
+
+twts_renewables <- search_tweets("renewables", 
+                           n = 5000, 
+                           include_rts = FALSE, 
+                           lang = "en")
+
+twts_renewables %>% 
+    write_as_csv(here("raw_data/twts_renewables.csv"), prepend_ids = TRUE, na = "", fileEncoding = "UTF-8")
