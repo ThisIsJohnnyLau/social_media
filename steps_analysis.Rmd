@@ -1,0 +1,61 @@
+## Compare tweet frequencies for two tags
+
+The volume of tweets posted for a product is a strong indicator of its brand salience. Let's compare "brand" salience for two competing tags, #TEDxGlaClimate and #ClimateCrisis.
+
+```{r}
+# Create a time series object for TEDxEdinburgh at hourly intervals
+twts_food_ts <- ts_data(twts_food, by = "hours")
+twts_lifestyle_ts <- ts_data(twts_lifestyle, by = "hours")
+twts_home_ts <- ts_data(twts_home, by = "hours")
+twts_travel_ts <- ts_data(twts_travel, by = "hours")
+
+# Rename the two columns in the time series object
+names(twts_food_ts) <- c("time", "food_n") 
+names(twts_lifestyle_ts) <- c("time", "lifestyle_n") 
+names(twts_home_ts) <- c("time", "home_n") 
+names(twts_travel_ts) <- c("time", "travel_n") 
+```
+
+```{r}
+# Create a time series object for TEDxEdinburgh at hourly intervals
+climate_twts_ts <- ts_data(climate_twts, by = "hours")
+twts_climateaction_ts <- ts_data(twts_climateaction, by = "hours")
+names(climate_twts_ts) <- c("time", "climate_n") 
+names(twts_climateaction_ts) <- c("time", "climateaction_n") 
+
+
+```
+
+```{r}
+
+    merged_df <- list(climate_twts_ts, twts_climateaction_ts) %>% reduce(left_join, by = "time")
+
+# Stack the tweet frequency columns
+melt_df <- melt(merged_df, na.rm = TRUE, id.vars = "time")
+
+# View the output
+head(melt_df)
+
+# Plot frequency of tweets on Puma and Nike
+ggplot(data = melt_df, aes(x = time, y = value, col = variable)) +
+  geom_line(lwd = 0.8)
+```
+
+```{r message=FALSE}
+library(reshape2)
+```
+
+```{r}
+
+    merged_df <- list(twts_food_ts, twts_lifestyle_ts, twts_home_ts, twts_travel_ts) %>% reduce(left_join, by = "time")
+
+# Stack the tweet frequency columns
+melt_df <- melt(merged_df, na.rm = TRUE, id.vars = "time")
+
+# View the output
+head(melt_df)
+
+# Plot frequency of tweets on Puma and Nike
+ggplot(data = melt_df, aes(x = time, y = value, col = variable)) +
+  geom_line(lwd = 0.8)
+```

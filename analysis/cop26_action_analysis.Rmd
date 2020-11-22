@@ -1,0 +1,254 @@
+---
+title: "cop26 Action Analysis"
+output: html_notebook
+---
+
+```{r message=FALSE}
+# Load libraries
+library(tidyverse)
+library(httpuv)
+library(rtweet)
+library(readr)
+library(here)
+library(rjson)
+```
+
+```{r}
+
+twts_COP26Action <- read_twitter_csv(here("raw_data/twts_COP26Action_18112020.csv"))
+
+```
+
+```{r}
+ts_plot(twts_COP26Action, by = "hours", color = "blue")
+```
+
+```{r}
+# Loading Regex library
+library(qdapRegex)
+
+# Extract tweet text from climate dataset
+twt_txt <- twts_COP26Action$text
+head(twt_txt)
+
+# Remove URLs from the tweet text
+twt_txt_url <- rm_twitter_url(twt_txt)
+
+# Replace special characters, punctuation, & numbers with spaces
+twt_txt_chrs  <- gsub("[^A-Za-z]"," " , twt_txt_url)
+
+# Loading text mining library
+library(tm)
+
+# Convert text in "twt_gsub" dataset to a text corpus
+twt_corpus <- twt_txt_chrs %>% 
+                VectorSource() %>% 
+                Corpus() 
+
+# Convert the corpus to lowercase
+twt_corpus_lwr <- tm_map(twt_corpus, tolower) 
+
+# Remove English stop words from the corpus using SMART dictionary and view the corpus
+twt_corpus_stpwd <- tm_map(twt_corpus_lwr, removeWords, stopwords("smart"))
+head(twt_corpus_stpwd$content)
+
+# Remove additional spaces from the corpus
+twt_corpus_spaces <- tm_map(twt_corpus_stpwd, stripWhitespace)
+
+# Loading library for text analysis
+library(qdap)
+
+# Extract term frequencies for top 60 words and view output
+termfreq  <-  freq_terms(twt_corpus_spaces, 60)
+termfreq
+```
+
+```{r}
+# Create a vector of custom stop words
+custom_stopwds <- c("amp", "ve", "don", "lo", "climate", "change", "da", "cop", "action")
+
+# Remove custom stop words and create a refined corpus
+corp_refined <- tm_map(twt_corpus_spaces, removeWords, custom_stopwds) 
+
+# Extract term frequencies for the top 25 words
+termfreq_25w <- freq_terms(corp_refined, 25)
+
+# Identify terms with more than 30 counts from the top 25 list
+term30 <- subset(termfreq_25w, FREQ > 30)
+
+
+# Barchart
+term30 %>% 
+ggplot() +
+aes(x = reorder(WORD, -FREQ), y = FREQ) +
+		geom_bar(stat = "identity", fill = "purple") + 
+        theme(axis.title.x = element_blank(),
+              axis.text.x = element_text(angle = 45, hjust = 1))
+        
+```
+
+```{r}
+library(RColorBrewer)
+library(wordcloud)
+
+# Create word cloud with 10 colors and max 30 words
+wordcloud(corp_refined, max.words = 30, 
+    colors = brewer.pal(10, "Dark2"), 
+    scale=c(4,1), random.order = FALSE)
+```
+
+```{r}
+
+# Load libraries
+library(topicmodels)
+
+
+# Create a document term matrix (DTM) for *climate*
+dtm_climate <- DocumentTermMatrix(corp_refined)
+
+# Find the sum of word counts in each document
+rowTotals <- apply(dtm_climate, 1, sum)
+
+# Select rows with a row total greater than zero
+dtm_climate_new <- dtm_climate[rowTotals > 0, ]
+
+# Create a topic model with 10 topics
+topicmodl_10 <- LDA(dtm_climate_new, k = 10)
+
+# Select and view the top 10 terms in the topic model
+top_10terms <- terms(topicmodl_10, 10)
+top_10terms 
+
+as_tibble(top_10terms)
+
+```
+
+```{r}
+library(syuzhet)
+
+# Perform sentiment analysis for tweets on `climate` 
+sa.value <- get_nrc_sentiment(twts_COP26Action$text)
+
+# View the sentiment scores
+head(sa.value, 10)
+```
+
+```{r}
+# Calculate sum of sentiment scores
+score <- colSums(sa.value[,])
+
+# Convert the sum of scores to a data frame
+score_df <- data.frame(score)
+
+# Convert row names into 'sentiment' column and combine with sentiment scores
+score_df2 <- cbind(sentiment = row.names(score_df),  
+				  score_df, row.names = NULL)
+print(score_df2)
+
+# Plot the sentiment scores
+ggplot(data = score_df2, aes(x = sentiment, y = score, fill = sentiment)) +
+  	 geom_bar(stat = "identity") +
+       theme(axis.text.x = element_text(angle = 45, hjust = 1),
+             legend.position = "none")
+```
+
+```{r message=FALSE}
+library(igraph)
+
+# Extract source vertex and target vertex from the tweet data frame
+rply_df <- twts_COP26Action[, c("screen_name" , "reply_to_screen_name" )]
+
+# Remove rows with missing values
+rply_df_new <- rply_df[complete.cases(rply_df), ]
+
+# Create a matrix
+rply_matrx <- as.matrix(rply_df_new)
+
+# Convert the matrix to a reply network
+nw_rply <- graph_from_edgelist(el = rply_matrx, directed = TRUE)
+
+# Calculate out-degree scores from the retweet network
+out_degree <- degree(nw_rply, mode = c("out"))
+
+# Sort the out-degree scores in decreasing order
+out_degree_sort <- sort(out_degree, decreasing = TRUE)
+
+# View users with the top 20 out-degree scores
+out_degree_sort[1:20]
+```
+
+```{r}
+# Compute the in-degree scores from the retweet network
+in_degree <- degree(nw_rply, mode = c("in"))
+
+# Sort the in-degree scores in decreasing order
+in_degree_sort <- sort(in_degree, decreasing = TRUE)
+
+# View users with the top 10 in-degree scores
+in_degree_sort[1:10]
+```
+
+```{r}
+# Calculate the betweenness scores from the retweet network
+betwn_nw <- betweenness(nw_rply, directed = TRUE)
+
+# Sort betweenness scores in decreasing order and round the values
+betwn_nw_sort <- betwn_nw %>%
+                    sort(decreasing = TRUE) %>%
+                    round()
+
+# View users with the top 10 betweenness scores 
+betwn_nw_sort[1:10]
+```
+
+```{r}
+# Create a variable for out-degree
+deg_out <- degree(nw_rply, mode = c("out"))
+deg_out
+
+# Amplify the out-degree values
+vert_size <- (deg_out * 3) + 5
+# + 5
+
+# #users
+# user_cos <- users_data(twts_COP26Action) %>%
+#     filter(followers_count > 1000000)
+
+
+# # Create a column and categorize follower counts above and below 2000
+# user_cos$follow <- ifelse(user_cos$followers_count > 2000, "1", "0")
+
+# Assign the new column as vertex attribute to the retweet network
+V(nw_rply)$followers <- user_cos$follow
+vertex_attr(nw_rply)
+
+# Set the vertex colors based on follower count and create a plot
+sub_color <- c("light blue", "light pink")
+
+# Set the vertex colors based on follower count and create a plot
+plot(nw_rply, asp = 9/12,
+     vertex.size = vert_size, edge.arrow.size = 0.5,
+     vertex.label.cex = 0.8,
+     vertex.color = sub_color[as.factor(vertex_attr(nw_rply, "followers"))],
+     vertex.label.color = "black", vertex.frame.color = "grey")
+```
+
+```{r}
+
+library(maps)
+
+# Extract geo-coordinates data to append as new columns
+cc_coord <- lat_lng(twts_COP26Action)
+
+# Omit rows with missing geo-coordinates in the data frame
+cc_geo <- na.omit(cc_coord[,c("lat", "lng")])
+
+# Plot longitude and latitude values of tweets on UK map
+map(database = "world", region = "UK(?!r)", fill = TRUE, col = "light green")
+with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
+
+# Plot longitude and latitude values of tweets on the world map
+map(database = "world", fill = TRUE, col = "light green")
+with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
+```
+

@@ -15,12 +15,12 @@ library(rjson)
 
 ```{r}
 
-climate_twts <- read_twitter_csv(here("raw_data/climate_twts.csv"))
+ twts_COP26 <- read_twitter_csv(here("raw_data/twts_COP26_18112020.csv"))
 
 ```
 
 ```{r}
-ts_plot(climate_twts, by = "hours", color = "blue")
+ts_plot(twts_COP26, by = "hours", color = "blue")
 ```
 
 ```{r}
@@ -28,7 +28,7 @@ ts_plot(climate_twts, by = "hours", color = "blue")
 library(qdapRegex)
 
 # Extract tweet text from climate dataset
-twt_txt <- climate_twts$text
+twt_txt <- twts_COP26$text
 head(twt_txt)
 
 # Remove URLs from the tweet text
@@ -65,7 +65,7 @@ termfreq
 
 ```{r}
 # Create a vector of custom stop words
-custom_stopwds <- c("amp", "ve", "don", "lo", "climate", "change")
+custom_stopwds <- c("amp", "ve", "don", "lo", "climate", "change", "da", "cop", "action")
 
 # Remove custom stop words and create a refined corpus
 corp_refined <- tm_map(twt_corpus_spaces, removeWords, custom_stopwds) 
@@ -81,8 +81,10 @@ term30 <- subset(termfreq_25w, FREQ > 30)
 term30 %>% 
 ggplot() +
 aes(x = reorder(WORD, -FREQ), y = FREQ) +
-		geom_bar(stat = "identity", fill = "blue") + 
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+		geom_bar(stat = "identity", fill = "purple") + 
+        theme(axis.title.x = element_blank(),
+              axis.text.x = element_text(angle = 45, hjust = 1))
+        
 ```
 
 ```{r}
@@ -117,6 +119,7 @@ topicmodl_10 <- LDA(dtm_climate_new, k = 10)
 top_10terms <- terms(topicmodl_10, 10)
 top_10terms 
 
+as_tibble(top_10terms)
 
 ```
 
@@ -124,7 +127,7 @@ top_10terms
 library(syuzhet)
 
 # Perform sentiment analysis for tweets on `climate` 
-sa.value <- get_nrc_sentiment(climate_twts$text)
+sa.value <- get_nrc_sentiment(twts_COP26$text)
 
 # View the sentiment scores
 head(sa.value, 10)
@@ -145,14 +148,17 @@ print(score_df2)
 # Plot the sentiment scores
 ggplot(data = score_df2, aes(x = sentiment, y = score, fill = sentiment)) +
   	 geom_bar(stat = "identity") +
-       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+       theme(axis.text.x = element_text(angle = 45, hjust = 1),
+             legend.position = "none")
 ```
 
 ```{r message=FALSE}
 library(igraph)
 
 # Extract source vertex and target vertex from the tweet data frame
-rply_df <- climate_twts[, c("screen_name" , "reply_to_screen_name" )]
+rply_df <- twts_COP26 %>% 
+    filter(followers_count > 10000) %>% 
+    select(screen_name, reply_to_screen_name) 
 
 # Remove rows with missing values
 rply_df_new <- rply_df[complete.cases(rply_df), ]
@@ -169,22 +175,12 @@ out_degree <- degree(nw_rply, mode = c("out"))
 # Sort the out-degree scores in decreasing order
 out_degree_sort <- sort(out_degree, decreasing = TRUE)
 
-# View users with the top 20 out-degree scores
-out_degree_sort[1:20]
-```
-
-```{r}
 # Compute the in-degree scores from the retweet network
 in_degree <- degree(nw_rply, mode = c("in"))
 
 # Sort the in-degree scores in decreasing order
 in_degree_sort <- sort(in_degree, decreasing = TRUE)
 
-# View users with the top 10 in-degree scores
-in_degree_sort[1:10]
-```
-
-```{r}
 # Calculate the betweenness scores from the retweet network
 betwn_nw <- betweenness(nw_rply, directed = TRUE)
 
@@ -193,25 +189,19 @@ betwn_nw_sort <- betwn_nw %>%
                     sort(decreasing = TRUE) %>%
                     round()
 
-# View users with the top 10 betweenness scores 
-betwn_nw_sort[1:10]
-```
-
-```{r}
 # Create a variable for out-degree
 deg_out <- degree(nw_rply, mode = c("out"))
-deg_out
 
 # Amplify the out-degree values
-vert_size <- (deg_out * 3)
+vert_size <- (deg_out * 3) + 5
 # + 5
 
 #users
-user_cos <- users_data(climate_twts) %>%
-    filter(followers_count > 1000000)
+user_cos <- users_data(twts_COP26) %>%
+    filter(followers_count > 10000)
 
 
-# Create a column and categorize follower counts above and below 2000
+# # Create a column and categorize follower counts above and below 2000
 user_cos$follow <- ifelse(user_cos$followers_count > 1000000, "1", "0")
 
 # Assign the new column as vertex attribute to the retweet network
@@ -221,12 +211,15 @@ vertex_attr(nw_rply)
 # Set the vertex colors based on follower count and create a plot
 sub_color <- c("light blue", "light pink")
 
-plot(nw_rply,
-     # asp = 30/30,
-     vertex.size = deg_out, edge.arrow.size = 0.01,
-     vertex.label.cex = 0.01,
+# Set the vertex colors based on follower count and create a plot
+plot(nw_rply, asp = 9/12,
+     vertex.size = vert_size,
+     edge.arrow.size = 0.5,
+     vertex.label.cex = 0.5,
      vertex.color = sub_color[as.factor(vertex_attr(nw_rply, "followers"))],
-     vertex.label.color = "black", vertex.frame.color = "light grey")
+     vertex.label.color = "black",
+     vertex.frame.color = "grey") %>% 
+    jitter()
 ```
 
 ```{r}
@@ -234,7 +227,7 @@ plot(nw_rply,
 library(maps)
 
 # Extract geo-coordinates data to append as new columns
-cc_coord <- lat_lng(climate_twts)
+cc_coord <- lat_lng(twts_climateaction)
 
 # Omit rows with missing geo-coordinates in the data frame
 cc_geo <- na.omit(cc_coord[,c("lat", "lng")])

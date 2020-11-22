@@ -1046,6 +1046,9 @@ with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
 # Plot longitude and latitude values of tweets on the world map
 map(database = "world", fill = TRUE, col = "light yellow")
 with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
+
+map(database = "world", region = "UK(?!r)", fill = TRUE, col = "light green")
+with(cc_geo, points(lng, lat, pch = 20, cex = 1, col = 'blue'))
 ```
 
 ***Comment***  
